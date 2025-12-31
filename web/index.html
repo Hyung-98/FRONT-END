@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="프론트엔드 개발 면접 질문 및 학습 자료 모음" />
+    <title>Frontend Developer Interview Questions</title>
+    <link rel="stylesheet" href="./common/style/reset.css" />
+    <link rel="stylesheet" href="./common/style/home.css" />
+  </head>
+  <body>
+    <main id="main-content" role="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title" class="visually-hidden">Frontend Developer Interview Questions</h1>
+        <p class="hero-description">프론트엔드 개발 면접 질문과 학습 자료를 체계적으로 정리한 자료 모음입니다.</p>
+      </section>
+
+      <section class="categories" aria-labelledby="categories-title">
+        <h2 id="categories-title" class="section-title">카테고리별 학습 자료</h2>
+
+        <!-- JavaScript 카테고리 -->
+        <article
+          class="category-section category-section--javascript"
+          aria-labelledby="js-category-title"
+          data-category-color="#eee615"
+        >
+          <h3 id="js-category-title" class="category-title">
+            <span class="category-icon" aria-hidden="true"
+              ><i
+                ><img
+                  src="./assets/images/icons/Logos/javascript-original.svg"
+                  alt="JavaScript"
+                  width="80"
+                  height="80" /></i
+            ></span>
+            JavaScript
+          </h3>
+          <ul class="topic-list" role="list">
+            <li class="topic-item" role="listitem">
+              <a href="./javascript/EventLoop/" class="topic-link" aria-label="Event Loop 학습 자료 보기">
+                <span class="topic-title">Event Loop</span>
+                <span class="topic-description"
+                  >JavaScript의 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘에 대해 학습합니다.</span
+                >
+                <span class="topic-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li class="topic-item" role="listitem">
+              <a href="./javascript/Hoisting/" class="topic-link" aria-label="Hoisting 학습 자료 보기">
+                <span class="topic-title">Hoisting</span>
+                <span class="topic-description"
+                  >변수 선언과 함수 선언이 스코프의 최상단으로 끌어올려지는 JavaScript의 동작 방식을 이해합니다.</span
+                >
+                <span class="topic-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+            <li class="topic-item" role="listitem">
+              <a href="./javascript/Prototype/" class="topic-link" aria-label="Prototype 학습 자료 보기">
+                <span class="topic-title">Prototype</span>
+                <span class="topic-description">JavaScript의 프로토타입 체인과 상속 구조를 이해합니다.</span>
+                <span class="topic-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          </ul>
+        </article>
+
+        <!-- React 카테고리 (향후 추가 예정) -->
+        <article
+          class="category-section category-section--react"
+          aria-labelledby="react-category-title"
+          data-category-color="#61DAFB"
+        >
+          <h3 id="react-category-title" class="category-title">
+            <span class="category-icon" aria-hidden="true"
+              ><i><img src="./assets/images/icons/Logos/react-original.svg" alt="React" width="80" height="80" /></i
+            ></span>
+            React
+          </h3>
+          <ul class="topic-list" role="list">
+            <li class="topic-item topic-item--coming-soon" role="listitem">
+              <a href="javascript:void(0)" class="topic-link" aria-label="" aria-disabled="true" tabindex="-1">
+                <span class="topic-title">준비 중</span>
+                <span class="topic-description">곧 추가될 예정입니다.</span>
+              </a>
+            </li>
+          </ul>
+        </article>
+
+        <!-- TypeScript 카테고리 (향후 추가 예정) -->
+        <article
+          class="category-section category-section--typescript"
+          aria-labelledby="ts-category-title"
+          data-category-color="#3178C6"
+        >
+          <h3 id="ts-category-title" class="category-title">
+            <span class="category-icon" aria-hidden="true"
+              ><i
+                ><img
+                  src="./assets/images/icons/Logos/typescript-original.svg"
+                  alt="TypeScript"
+                  width="80"
+                  height="80" /></i
+            ></span>
+            TypeScript
+          </h3>
+          <ul class="topic-list" role="list">
+            <li class="topic-item topic-item--coming-soon" role="listitem">
+              <a href="javascript:void(0)" class="topic-link" aria-label="" aria-disabled="true" tabindex="-1">
+                <span class="topic-title">준비 중</span>
+                <span class="topic-description">곧 추가될 예정입니다.</span>
+              </a>
+            </li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+      <p class="footer-text">
+        <small>프론트엔드 개발 학습 자료 모음</small>
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<header>
+  <div class="header">
+    <h1></h1>
+    <button type="button" class="nav-open" aria-label="메뉴 열기">
+      <img
+        src="/web/assets/images/icons/menu.svg"
+        width="48"
+        height="48"
+        srcset="/web/assets/images/icons/menu@2x.png 1x, /web/assets/images/icons/menu@3x.png 2x"
+        loading="lazy"
+        alt="메뉴 열기 아이콘"
+      />
+    </button>
+  </div>
+  <nav aria-label="주요 네비게이션">
+    <div class="nav-overlay"></div>
+    <div class="nav-container">
+      <div class="nav-header">
+        <p>메뉴</p>
+        <button type="button" class="nav-close" aria-label="메뉴 닫기">
+          <span class="nav-toggle-icon">
+            <img
+              src="/web/assets/images/icons/close_round_light-1.svg"
+              width="48"
+              height="48"
+              srcset="
+                /web/assets/images/icons/close_round_light@2x.png 1x,
+                /web/assets/images/icons/close_round_light@3x.png 2x
+              "
+              loading="lazy"
+              alt="메뉴 닫기 아이콘"
+            />
+          </span>
+        </button>
+      </div>
+      <ul>
+        <li><a href="/web/">홈</a></li>
+        <li>
+          <button type="button" class="nav-toggle" aria-expanded="false">JavaScript</button>
+          <ul class="nav-sublist">
+            <li><a href="/web/javascript/EventLoop/">Event Loop</a></li>
+            <li><a href="/web/javascript/Hoisting/">Hoisting</a></li>
+            <li><a href="/web/javascript/Prototype/">Prototype</a></li>
+          </ul>
+        </li>
+        <li>
+          <button type="button" class="nav-toggle" aria-expanded="false">React</button>
+          <ul class="nav-sublist">
+            <li><a href="/web/react/EventLoop/">React</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

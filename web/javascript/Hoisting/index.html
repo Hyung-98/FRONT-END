@@ -1,0 +1,113 @@
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoisting</title>
+    <link rel="stylesheet" href="../../common/style/reset.css" />
+    <link rel="stylesheet" href="../../common/style/utils.css" />
+    <script src="../../common/js/import.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h2>호이스팅이란 무엇인가?</h2>
+
+        <p>
+          <strong>
+            호이스팅은 JavaScript 엔진이 코드를 실행하기 전에 변수 선언과 함수 선언을 해당 스코프의 최상단으로 끌어올려
+            처리하는 동작 방식입니다.
+          </strong>
+        </p>
+        <p class="mb-2">중요한 점은 **선언만 호이스팅이 되고, 할당은 호이스팅이 되지 않는다**는 것입니다.</p>
+
+        <h2>왜 호이스팅이 발생하는가?</h2>
+
+        <p class="mb-2">
+          JavaScript는 코드를 실행하기 전에 실행 컨텍스트를(Execution Context)를 생성하고 생성합니다. 이 과정에서 다음
+          두 단계가 발생합니다.
+        </p>
+
+        <ol>
+          <li>Creation Phase: 스코프 내 변수, 함수 선언을 메모리에 등록합니다.</li>
+          <li>Execution Phase: 실제 코드 실행 및 값 할당을 진행합니다.</li>
+        </ol>
+        <p class="mb-2">호이스팅은 Creation Phase에서 선언이 먼저 등록되는 현상입니다.</p>
+
+        <h2>변수 선언 방식별 호이스팅 차이</h2>
+
+        <div class="dark-theme">
+          <pre><code><strong style="color: #eee615;">var</strong>
+// var 선언 호이스팅 되고 초기값은 undefined로 자동 초기화됩니다.
+// 예측 불가 버그 발생, ES6 이후 let, const 사용 권장
+
+console.log(a); // undefined
+var a = 10;
+
+<strong style="color: #eee615;">let</strong> <strong style="color: #eee615;">const</strong>
+// let 선언 호이스팅 되고 선언 시점까지 접근 불가 초기화 되지 않음
+// TDZ(Temporal Dead Zone) 발생
+// "호이스팅이 되지 않는다"는 틀림, 선언 시점까지 접근 불가
+
+console.log(b); // ReferenceError: Cannot access 'b' before initialization
+console.log(c); // ReferenceError: Cannot access 'c' before initialization
+let b = 2;
+const c = 3;
+
+<strong style="color: #eee615;">function</strong>
+// 선언 + 정의 전체가 호이스팅 됩니다.
+// 선언 위치와 무관하게 호출이 가능합니다.
+// 공통 유틸 함수에 적합합니다.
+
+hello();
+
+function hello() {
+  console.log("hello");
+}
+
+<strong style="color: #eee615;">function expression</strong>
+// 변수만 호이스팅 되고 함수 정의는 호이스팅 되지 않습니다.
+// 함수는 할당 이후에만 사용 가능합니다.
+
+e(); // TypeError
+
+var e = function () {
+  console.log("hello");
+}
+
+hello(); // ReferenceError
+const hello = () => {};
+</code></pre>
+        </div>
+
+        <h2>실무에서의 호이스팅 대응 전략</h2>
+
+        <ol>
+          <li><code>var</code> 사용은 지양합니다.</li>
+          <li>변수는 항상 상단에 선언 합니다.</li>
+          <li>함수는 선언문 or 명확한 위치에 배치</li>
+          <li>TDZ(Temporal Dead Zone)를 이해하고 선언 전에는 접근 금지합니다.</li>
+          <li>린트 규칙(no-use-before-define) 준수</li>
+        </ol>
+      </section>
+    </main>
+    <script>
+      console.log(a);
+      var a = 1;
+      console.log(a);
+      let b = 2;
+      console.log(b);
+      const c = 3;
+      console.log(c);
+      function d() {
+        console.log(d);
+      }
+      d();
+      console.log(d);
+      const e = function () {
+        console.log(e);
+      };
+      e();
+      console.log(e);
+    </script>
+  </body>
+</html>

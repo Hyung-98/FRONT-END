@@ -3,17 +3,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event Loop</title>
-    <link rel="stylesheet" href="../common/reset.css" />
-    <link rel="stylesheet" href="../common/utils.css" />
+    <link rel="stylesheet" href="../../common/style/reset.css" />
+    <link rel="stylesheet" href="../../common/style/utils.css" />
+    <script src="../../common/js/import.js"></script>
   </head>
   <body>
-    <div id="container">
-      <h1>Event Loop</h1>
-      <div id="box">
-        <div>
-          <p class="pre-line">
-            이벤트 루프는
-            <strong>JavaScript가 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘입니다.</strong>
+      <main>
+        <section>
+          <h2>이벤트 루프란 무엇인가?</h2>
+          <p class="pre-line"><strong>JavaScript가 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘입니다.</strong>
             JavaScript 엔진은 한 번에 하나의 작업만 처리하지만, 이벤트 루프를 통해 논블로킹(Non-Blocking) 방식의 비동기
             처리가 가능합니다. 핵심 포인트는 다음 세 가지 입니다.<br />
           </p>
@@ -130,10 +128,10 @@
             </li>
           </ol>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
 
-    <script>
+    <!-- <script>
       alert("동기 코드 1");
       setTimeout(() => {
         alert("매크로태스크 2");
@@ -151,6 +149,6 @@
         });
       });
       alert("동기 코드 5");
-    </script>
+    </script> -->
   </body>
 </html>
