@@ -6,13 +6,13 @@
 // // .env.local 파일 로드
 // config({ path: resolve(__dirname, '../.env.local') })
 
-// const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+// const supabaseUrl = process.env.SUPABASE_URL
 // // Migration scripts need service role key to bypass RLS policies
 // const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 // if (!supabaseUrl || !supabaseServiceRoleKey) {
 //   console.error('❌ Missing required environment variables:')
-//   console.error('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? '✓' : '✗')
+//   console.error('SUPABASE_URL:', supabaseUrl ? '✓' : '✗')
 //   console.error('SUPABASE_SERVICE_ROLE_KEY:', supabaseServiceRoleKey ? '✓' : '✗')
 //   console.error('\n⚠️  Note: Migration scripts require SUPABASE_SERVICE_ROLE_KEY (not anon key)')
 //   console.error('   This key bypasses RLS policies and should NEVER be exposed publicly.')
