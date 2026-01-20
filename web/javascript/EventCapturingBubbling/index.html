@@ -1,49 +1,89 @@
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Capturing Bubbling</title>
+    <meta name="description" content="JavaScript의 이벤트 캡처링과 버블링을 이해합니다." />
+    <title>Event Capturing Bubbling - Frontend Dev</title>
     <link rel="stylesheet" href="../../common/style/reset.css" />
-    <link rel="stylesheet" href="../../common/style/utils.css" />
-    <script src="../../common/js/import.js"></script>
+    <link rel="stylesheet" href="../../common/style/blog-detail.css" />
   </head>
   <body>
-    <main>
-      <section>
-        <h2>Event Capturing Bubbling</h2>
-
-        <h3>1) 이벤트 캡쳐링(Capturing)과 버블링(Bubbling)이란?</h3>
-        <p>DOM 이벤트가 발생했을 때, 이벤트가 전달되는 방향(전파 단계)을 의미합니다.</p>
-        <p>이벤트는 항상 3단계를 거칩니다.</p>
-        <p>1. 캡처링(Capturing Phase) 단계</p>
-        <p>2. 타겟(Target Phase) 단계</p>
-        <p>3. 버블링(Bubbling Phase) 단계</p>
-
-        <h3>2) 이벤트 전파 흐름 한눈에 보기</h3>
-        <div class="img-wrap">
-          <img src="../../assets/images/img_eventCapture_eventBubbling.jpg" alt="이벤트 전파 흐름 한눈에 보기" />
+    <!-- 헤더 -->
+    <header class="blog-detail-header">
+      <div class="blog-detail-header-container">
+        <a href="../../" class="blog-detail-logo">Frontend Dev</a>
+        <nav class="blog-detail-nav">
+          <a href="../../" class="blog-detail-nav-link">Home</a>
+          <a href="#" class="blog-detail-nav-link">Case Studies</a>
+          <a href="#" class="blog-detail-nav-link">Services</a>
+          <a href="#" class="blog-detail-nav-link">About</a>
+          <a href="#" class="blog-detail-nav-link">News</a>
+          <a href="#" class="blog-detail-nav-link">Pages</a>
+        </nav>
+        <div class="blog-detail-header-actions">
+          <a href="#" class="blog-detail-btn blog-detail-btn--primary">Get In Touch</a>
         </div>
-        <p class="mt-4">
-          캡쳐링은 최상위 요소부터 하위 요소로 이벤트가 전파되는 방향입니다.<br />
-          window -> document -> html -> body -> table -> tbody -> tr -> td
-        </p>
-        <p>타깃은 실제 이벤트가 발생한 요소를 의미합니다.</p>
-        <p>
-          버블링은 타깃 요소부터 상위 요소로 이벤트가 전파되는 방향입니다.<br />
-          td -> tr -> tbody -> table -> body -> html -> document -> window
-        </p>
+      </div>
+    </header>
 
-        <h3>3) 이벤트 버블링(Bubbling) 예제</h3>
-        <p>이벤트가 가장 안쪽 요소에서 시작해서 바깥 부모 요소로 전파되는 방식</p>
-        <p><code>addEventListener</code>의 기본 동작입니다. 대부분의 이벤트는 버블링이 발생합니다.</p>
+    <!-- 메인 콘텐츠 -->
+    <main class="blog-detail-main">
+      <!-- 제목 섹션 -->
+      <div class="blog-detail-header-section">
+        <div class="blog-detail-date">20TH JANUARY 2025</div>
+        <h1 class="blog-detail-title">Event Capturing Bubbling</h1>
+        <p class="blog-detail-subtitle">
+          DOM 이벤트가 발생했을 때, 이벤트가 전달되는 방향(전파 단계)을 의미하는 캡처링과 버블링에 대해 학습합니다.
+        </p>
+      </div>
 
-        <pre><code>``html``
+      <!-- 히어로 이미지 -->
+      <div class="blog-detail-hero">
+        <img
+          src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1200&h=600&fit=crop"
+          alt="Event Capturing Bubbling"
+          class="blog-detail-hero-image"
+        />
+      </div>
+
+      <!-- 콘텐츠 레이아웃 -->
+      <div class="blog-detail-content-wrapper">
+        <article class="blog-detail-content">
+          <h2>이벤트 캡쳐링(Capturing)과 버블링(Bubbling)이란?</h2>
+          <p>DOM 이벤트가 발생했을 때, 이벤트가 전달되는 방향(전파 단계)을 의미합니다.</p>
+          <p>이벤트는 항상 3단계를 거칩니다.</p>
+          <ol>
+            <li>캡처링(Capturing Phase) 단계</li>
+            <li>타겟(Target Phase) 단계</li>
+            <li>버블링(Bubbling Phase) 단계</li>
+          </ol>
+
+          <h2>이벤트 전파 흐름 한눈에 보기</h2>
+          <div class="img-wrap">
+            <img src="../../assets/images/img_eventCapture_eventBubbling.jpg" alt="이벤트 전파 흐름 한눈에 보기" />
+          </div>
+          <p>
+            캡쳐링은 최상위 요소부터 하위 요소로 이벤트가 전파되는 방향입니다.<br />
+            window -> document -> html -> body -> table -> tbody -> tr -> td
+          </p>
+          <p>타깃은 실제 이벤트가 발생한 요소를 의미합니다.</p>
+          <p>
+            버블링은 타깃 요소부터 상위 요소로 이벤트가 전파되는 방향입니다.<br />
+            td -> tr -> tbody -> table -> body -> html -> document -> window
+          </p>
+
+          <h2>이벤트 버블링(Bubbling) 예제</h2>
+          <p>이벤트가 가장 안쪽 요소에서 시작해서 바깥 부모 요소로 전파되는 방식</p>
+          <p><code>addEventListener</code>의 기본 동작입니다. 대부분의 이벤트는 버블링이 발생합니다.</p>
+
+          <pre><code>html
 
 &lt;div id="parent"&gt;
   &lt;button id="child"&gt;Click me&lt;/button&gt;
 &lt;/div&gt;
 
-``js``
+js
 
 const parent = document.querySelector("#parent");
 const child = document.querySelector("#child");
@@ -56,22 +96,22 @@ parent.addEventListener("click", () => {
   console.log("parent clicked");
 });
 
-``결과``
+결과
 
 child clicked
 parent clicked</code></pre>
 
-        <h3>4) 이벤트 캡쳐링(Capturing) 예제</h3>
-        <p>이벤트가 가장 바깥 요소부터 시작해서 안쪽 요소로 전파되는 방식</p>
-        <p><code>addEventListener</code>의 <code>capture</code> 옵션을 사용하여 이벤트 캡쳐링을 구현할 수 있습니다.</p>
+          <h2>이벤트 캡쳐링(Capturing) 예제</h2>
+          <p>이벤트가 가장 바깥 요소부터 시작해서 안쪽 요소로 전파되는 방식</p>
+          <p><code>addEventListener</code>의 <code>capture</code> 옵션을 사용하여 이벤트 캡쳐링을 구현할 수 있습니다.</p>
 
-        <pre><code>``html``
+          <pre><code>html
 
 &lt;div id="parent"&gt;
   &lt;button id="child"&gt;Click me&lt;/button&gt;
 &lt;/div&gt;
 
-``js``
+js
 
 const parent = document.querySelector("#parent");
 const child = document.querySelector("#child");
@@ -84,15 +124,15 @@ parent.addEventListener("click", () => {
   console.log("parent clicked");
 }, true); // true 옵션을 사용하여 이벤트 캡쳐링을 구현합니다.
 
-``결과``
+결과
 
 parent clicked
 child clicked</code></pre>
 
-        <h3>5) 실무예시</h3>
-        <p>이벤트 캡쳐링과 버블링을 활용하여 실무에서 사용할 수 있는 예제를 살펴보겠습니다.</p>
+          <h2>실무예시</h2>
+          <p>이벤트 캡쳐링과 버블링을 활용하여 실무에서 사용할 수 있는 예제를 살펴보겠습니다.</p>
 
-        <pre><code>``html``
+          <pre><code>html
 
 &lt;ul id="list"&gt;
   &lt;li id="1"&gt;1&lt;/li&gt;
@@ -100,7 +140,7 @@ child clicked</code></pre>
   &lt;li id="3"&gt;3&lt;/li&gt;
 &lt;/ul&gt;
 
-``js``
+js
 
 const list = document.querySelector("#list");
 
@@ -110,52 +150,96 @@ list.addEventListener("click", (event) => {
   }
 });
 
-``결과``
+결과
 
 1
 2
 3
 
-``js``
+js
 
 child.addEventListener("click", (event) => {
   event.stopPropagation();
 });
 
+결과
 
-``결과``
+없음</code></pre>
 
-없음
-</code></pre>
+          <p>
+            <code>li</code>가 동적으로 추가돼도 이벤트가 전파되며, 이벤트 리스너 하나로 관리가 가능하여 코드 가독성과
+            유지보수성을 높일 수 있습니다.<br />
+            이벤트 캡쳐링과 버블링을 사용하면 성능이 저하될 수 있습니다. 따라서, 이벤트 캡쳐링과 버블링을 사용할 때는
+            성능과 유지보수를 고려하여 사용해야 합니다.<br />
+          </p>
+          <p>
+            <code>stopPropagation</code> 메서드를 사용하여 이벤트 전파를 중지할 수 있습니다.<br />
+            모달 내부 클릭 시 배경 클릭 이벤트 차단을 하거나 특정 요소에서만 이벤트 처리를 하고 싶을 때 사용할 수
+            있습니다.
+          </p>
 
-        <p class="mt-2">
-          <code>li</code>가 동적으로 추가돼도 이벤트가 전파되며, 이벤트 리스너 하나로 관리가 가능하여 코드 가독성과
-          유지보수성을 높일 수 있습니다.<br />
-          이벤트 캡쳐링과 버블링을 사용하면 성능이 저하될 수 있습니다. 따라서, 이벤트 캡쳐링과 버블링을 사용할 때는
-          성능과 유지보수를 고려하여 사용해야 합니다.<br />
-        </p>
-        <p>
-          <code>stopPropagation</code> 메서드를 사용하여 이벤트 전파를 중지할 수 있습니다.<br />
-          모달 내부 클릭 시 배경 클릭 이벤트 차단을 하거나 특정 요소에서만 이벤트 처리를 하고 싶을 때 사용할 수
-          있습니다.
-        </p>
+          <h4>
+            DOM 이벤트는 캡쳐링 -> 타깃 -> 버블링 단계를 거쳐 전파됩니다. 기본적으로는 버블링이 사용되며, 이를 활용해
+            이벤트 위임 패턴을 구현합니다. 캡쳐링은 특정 이벤트를 선제적으로 처리하거나 차단해야 할 때 제한적으로
+            사용합니다.
+          </h4>
+        </article>
 
-        <h4>
-          DOM 이벤트는 캡쳐링 -> 타깃 -> 버블링 단계를 거쳐 전파됩니다. 기본적으로는 버블링이 사용되며, 이를 활용해
-          이벤트 위임 패턴을 구현합니다. 캡쳐링은 특정 이벤트를 선제적으로 처리하거나 차단해야 할 때 제한적으로
-          사용합니다.
-        </h4>
-      </section>
+        <!-- 사이드바 -->
+        <aside class="blog-detail-sidebar">
+          <!-- Share 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">SHARE</h3>
+            <div class="blog-detail-share-links">
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>INSTAGRAM</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>TWITTER</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>FACEBOOK</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Details 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">DETAILS</h3>
+            <div class="blog-detail-details">
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">DATE</span>
+                <span class="blog-detail-detail-value">20th January 2025</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">CATEGORY</span>
+                <span class="blog-detail-detail-value">JavaScript</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">READING</span>
+                <span class="blog-detail-detail-value">10 Min</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">AUTHOR</h3>
+            <div class="blog-detail-author">
+              <div class="blog-detail-author-info">
+                <div class="blog-detail-author-avatar"></div>
+                <div class="blog-detail-author-details">
+                  <div class="blog-detail-author-name">Frontend Dev</div>
+                  <div class="blog-detail-author-title">DEVELOPER</div>
+                </div>
+              </div>
+              <p class="blog-detail-author-bio">
+                프론트엔드 개발 학습 자료를 체계적으로 정리하고 공유하는 개발자입니다.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
     </main>
-    <footer>
-      <p>
-        출처:
-        <a
-          href="https://medium.com/gammastack/event-capturing-bubbling-and-target-in-javascript-52c1453df82e"
-          target="_blank"
-          >https://medium.com/gammastack/event-capturing-bubbling-and-target-in-javascript-52c1453df82e</a
-        >
-      </p>
-    </footer>
   </body>
 </html>

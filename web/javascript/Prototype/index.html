@@ -1,73 +1,109 @@
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prototype</title>
+    <meta name="description" content="JavaScript의 프로토타입 체인과 상속 구조를 이해합니다." />
+    <title>Prototype - Frontend Dev</title>
     <link rel="stylesheet" href="../../common/style/reset.css" />
-    <link rel="stylesheet" href="../../common/style/utils.css" />
-    <script src="../../common/js/import.js"></script>
+    <link rel="stylesheet" href="../../common/style/blog-detail.css" />
     <script src="../../common/js/utils.js"></script>
   </head>
   <body>
-    <main>
-      <section>
-        <h2>Prototype이란 무엇인가?</h2>
+    <!-- 헤더 -->
+    <header class="blog-detail-header">
+      <div class="blog-detail-header-container">
+        <a href="../../" class="blog-detail-logo">Frontend Dev</a>
+        <nav class="blog-detail-nav">
+          <a href="../../" class="blog-detail-nav-link">Home</a>
+          <a href="#" class="blog-detail-nav-link">Case Studies</a>
+          <a href="#" class="blog-detail-nav-link">Services</a>
+          <a href="#" class="blog-detail-nav-link">About</a>
+          <a href="#" class="blog-detail-nav-link">News</a>
+          <a href="#" class="blog-detail-nav-link">Pages</a>
+        </nav>
+        <div class="blog-detail-header-actions">
+          <a href="#" class="blog-detail-btn blog-detail-btn--primary">Get In Touch</a>
+        </div>
+      </div>
+    </header>
 
-        <p>
-          <strong>Prototype은 JavaScript 객체가 다른 객체로부터 속성과 메서드를 상속받기 위해 참조하는 내부 객체</strong
-          >입니다. 자바스크립트에 클래스는 없습니다.
+    <!-- 메인 콘텐츠 -->
+    <main class="blog-detail-main">
+      <!-- 제목 섹션 -->
+      <div class="blog-detail-header-section">
+        <div class="blog-detail-date">21ST JANUARY 2025</div>
+        <h1 class="blog-detail-title">Prototype이란 무엇인가?</h1>
+        <p class="blog-detail-subtitle">
+          JavaScript의 프로토타입 체인과 상속 구조를 이해하고, Class 문법과의 관계를 알아봅니다.
         </p>
+      </div>
 
-        <p>
-          JavaScript는 <strong>클래스 기반이 아니라 프로토 타입 기반 언아</strong>이며, 모든 객체는 내부적으로
-          <code>[[Prototype]]</code> 이라는 숨겨진 참조를 하나 가지고 있습니다.
-        </p>
+      <!-- 히어로 이미지 -->
+      <div class="blog-detail-hero">
+        <img
+          src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1200&h=600&fit=crop"
+          alt="Prototype"
+          class="blog-detail-hero-image"
+        />
+      </div>
 
-        <pre><code>const obj = {};</code></pre>
+      <!-- 콘텐츠 레이아웃 -->
+      <div class="blog-detail-content-wrapper">
+        <article class="blog-detail-content">
+          <h2>Prototype이란 무엇인가?</h2>
 
-        <p class="mt-1">위 객체는 내부적으로 다음과 같은 구조를 가집니다.</p>
+          <p>
+            <strong>Prototype은 JavaScript 객체가 다른 객체로부터 속성과 메서드를 상속받기 위해 참조하는 내부 객체</strong
+            >입니다. 자바스크립트에 클래스는 없습니다.
+          </p>
 
-        <pre><code>obj -> [[Prototype]] -> Object.prototype -> null</code></pre>
+          <p>
+            JavaScript는 <strong>클래스 기반이 아니라 프로토타입 기반 언어</strong>이며, 모든 객체는 내부적으로
+            <code>[[Prototype]]</code> 이라는 숨겨진 참조를 하나 가지고 있습니다.
+          </p>
 
-        <h2 class="mt-4">Prototype의 동작 원리!!</h2>
+          <pre><code>const obj = {};</code></pre>
 
-        <h3>프로퍼티 탐색 규칙 (Prototype Chain)</h3>
+          <p>위 객체는 내부적으로 다음과 같은 구조를 가집니다.</p>
 
-        <pre><code>obj.someMethod();</code></pre>
+          <pre><code>obj -> [[Prototype]] -> Object.prototype -> null</code></pre>
 
-        <p class="mt-1">JavaScript 엔진은 다음 순서로 탐색합니다.</p>
+          <h2>Prototype의 동작 원리</h2>
 
-        <ol>
-          <li><code>obj</code> 자신에게 <code>someMethod</code>가 있는가?</li>
-          <li>없다면? <code>obj.[[Prototype]]</code>으로 이동</li>
-          <li>거기에도 없다면? 그 위의 prototype에서 찾는다.</li>
-          <li>최종적으로 <code>null</code>을 만날 때까지 계속 찾는다.</li>
-        </ol>
+          <h3>프로퍼티 탐색 규칙 (Prototype Chain)</h3>
 
-        <h2 class="mt-4"><code>prototype</code> vs <code>[[Prototype]]</code>차이</h2>
+          <pre><code>obj.someMethod();</code></pre>
 
-        <h3 class="mt-3">1)<code>[[Prototype]]</code></h3>
+          <p>JavaScript 엔진은 다음 순서로 탐색합니다.</p>
 
-        <ul class="mt-2 mb-2">
-          <li>모든 객체가 가진 내부 슬롯</li>
-          <li>실제 상속이 발생하는 대상</li>
-          <li>직접 접근하지 않고 간접적인 접근만 가능</li>
-        </ul>
+          <ol>
+            <li><code>obj</code> 자신에게 <code>someMethod</code>가 있는가?</li>
+            <li>없다면? <code>obj.[[Prototype]]</code>으로 이동</li>
+            <li>거기에도 없다면? 그 위의 prototype에서 찾는다.</li>
+            <li>최종적으로 <code>null</code>을 만날 때까지 계속 찾는다.</li>
+          </ol>
 
-        <pre><code>js
+          <h2><code>prototype</code> vs <code>[[Prototype]]</code>차이</h2>
 
-Object.getPrototypeOf(obj) === obj.[[Prototype]]</code></pre>
+          <h3>1) <code>[[Prototype]]</code></h3>
 
-        <h3 class="mt-3">2)<code>prototype</code></h3>
+          <ul>
+            <li>모든 객체가 가진 내부 슬롯</li>
+            <li>실제 상속이 발생하는 대상</li>
+            <li>직접 접근하지 않고 간접적인 접근만 가능</li>
+          </ul>
 
-        <ul class="mt-2 mb-2">
-          <li>생성자 함수에만 존재하는 프로퍼티</li>
-          <li>이 생성자로 만든 객체들이 참조할 부모 객체</li>
-        </ul>
+          <pre><code>Object.getPrototypeOf(obj) === obj.[[Prototype]]</code></pre>
 
-        <pre><code>js
+          <h3>2) <code>prototype</code></h3>
 
-function User() {}
+          <ul>
+            <li>생성자 함수에만 존재하는 프로퍼티</li>
+            <li>이 생성자로 만든 객체들이 참조할 부모 객체</li>
+          </ul>
+
+          <pre><code>function User() {}
 User.prototype.sayHi = function() {};
 
 const u = new User();
@@ -76,13 +112,11 @@ const u = new User();
 
 u.[[Prototype]] === User.prototype // true</code></pre>
 
-        <h2 class="mt-4">실무 예시</h2>
+          <h2>실무 예시</h2>
 
-        <h3>1) 생성자 함수 + prototype</h3>
+          <h3>1) 생성자 함수 + prototype</h3>
 
-        <pre><code>js
-
-function Modal(id) {
+          <pre><code>function Modal(id) {
   this.id = id;
 }
 
@@ -97,36 +131,31 @@ Modal.prototype.close = function() {
 const modal1 = new Modal('login');
 const modal2 = new Modal('alert');</code></pre>
 
-        <p class="mt-2"><strong>왜 이렇게 쓰는가?</strong></p>
+          <p><strong>왜 이렇게 쓰는가?</strong></p>
 
-        <ul>
-          <li><code>open</code>, <code>close</code> 메서드는 한 번만 메모리에 생성</li>
-          <li>모든 인스턴스가 공유하므로 메모리 절약</li>
-          <li>객체 수가 많을수록 효과 큼</li>
-        </ul>
+          <ul>
+            <li><code>open</code>, <code>close</code> 메서드는 한 번만 메모리에 생성</li>
+            <li>모든 인스턴스가 공유하므로 메모리 절약</li>
+            <li>객체 수가 많을수록 효과 큼</li>
+          </ul>
 
-        <h3>2) 잘못된 사용 예시</h3>
+          <h3>2) 잘못된 사용 예시</h3>
 
-        <pre><code>js
-
-function Modal(id) {
+          <pre><code>function Modal(id) {
   this.id = id;
   this.open = function () {};
-}
-</code></pre>
+}</code></pre>
 
-        <p class="mt-2"><strong>왜 이렇게 쓰면 안 되는가?</strong></p>
+          <p><strong>왜 이렇게 쓰면 안 되는가?</strong></p>
 
-        <ul>
-          <li>각 인스턴스마다 메서드가 별도로 생성되어 메모리 낭비</li>
-          <li>메서드 수가 많을수록 더 큰 문제</li>
-        </ul>
+          <ul>
+            <li>각 인스턴스마다 메서드가 별도로 생성되어 메모리 낭비</li>
+            <li>메서드 수가 많을수록 더 큰 문제</li>
+          </ul>
 
-        <h2 class="mt-4">Class 문법과 Prototype의 관계</h2>
+          <h2>Class 문법과 Prototype의 관계</h2>
 
-        <pre><code>js
-
-class Modal {
+          <pre><code>class Modal {
   constructor(id) {
     this.id = id;
   }
@@ -138,11 +167,9 @@ class Modal {
   }
 }</code></pre>
 
-        <p class="mt-2">내부적으로는 <strong>전부 prototype을 사용하여 구현</strong>되어 있습니다.</p>
+          <p>내부적으로는 <strong>전부 prototype을 사용하여 구현</strong>되어 있습니다.</p>
 
-        <pre><code>js
-
-Modal.prototype.open = function() {
+          <pre><code>Modal.prototype.open = function() {
   console.log(this.id + ' open');
 }
 
@@ -150,16 +177,72 @@ Modal.prototype.close = function() {
   console.log(this.id + ' close');
 }</code></pre>
 
-        <p class="mt-2">
-          따라서 <strong>Class 문법은 사실 프로토타입의 문법 신택스 설탕(Syntactic Sugar)</strong>입니다.
-        </p>
+          <p>
+            따라서 <strong>Class 문법은 사실 프로토타입의 문법 설탕(Syntactic Sugar)</strong>입니다.
+          </p>
 
-        <h4 title="Prototype 정리">
-          JavaScript의 prototype은 객체 간 상속을 구현하기 위한 핵심 메커니즘입니다. 객체는 자신의 프로퍼티에 없으면
-          프로토타입 체인(prototype chain)을 따라 상위 객체를 탐색하며, 이를 통해 메서드를 공유하고 메모리를 효율적으로
-          사용, 관리할 수 있습니다. Class 문법 역시 내부적으로는 prototype을 기반으로 동작합니다.
-        </h4>
-      </section>
+          <h4>
+            JavaScript의 prototype은 객체 간 상속을 구현하기 위한 핵심 메커니즘입니다. 객체는 자신의 프로퍼티에 없으면
+            프로토타입 체인(prototype chain)을 따라 상위 객체를 탐색하며, 이를 통해 메서드를 공유하고 메모리를 효율적으로
+            사용, 관리할 수 있습니다. Class 문법 역시 내부적으로는 prototype을 기반으로 동작합니다.
+          </h4>
+        </article>
+
+        <!-- 사이드바 -->
+        <aside class="blog-detail-sidebar">
+          <!-- Share 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">SHARE</h3>
+            <div class="blog-detail-share-links">
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>INSTAGRAM</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>TWITTER</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>FACEBOOK</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Details 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">DETAILS</h3>
+            <div class="blog-detail-details">
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">DATE</span>
+                <span class="blog-detail-detail-value">21st January 2025</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">CATEGORY</span>
+                <span class="blog-detail-detail-value">JavaScript</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">READING</span>
+                <span class="blog-detail-detail-value">12 Min</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">AUTHOR</h3>
+            <div class="blog-detail-author">
+              <div class="blog-detail-author-info">
+                <div class="blog-detail-author-avatar"></div>
+                <div class="blog-detail-author-details">
+                  <div class="blog-detail-author-name">Frontend Dev</div>
+                  <div class="blog-detail-author-title">DEVELOPER</div>
+                </div>
+              </div>
+              <p class="blog-detail-author-bio">
+                프론트엔드 개발 학습 자료를 체계적으로 정리하고 공유하는 개발자입니다.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
     </main>
   </body>
 </html>

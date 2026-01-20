@@ -1,15 +1,55 @@
+<!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Event Loop</title>
+    <meta name="description" content="JavaScript의 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘인 Event Loop에 대해 학습합니다." />
+    <title>Event Loop - Frontend Dev</title>
     <link rel="stylesheet" href="../../common/style/reset.css" />
-    <link rel="stylesheet" href="../../common/style/utils.css" />
-    <script src="../../common/js/import.js"></script>
+    <link rel="stylesheet" href="../../common/style/blog-detail.css" />
   </head>
   <body>
-      <main>
-        <section>
+    <!-- 헤더 -->
+    <header class="blog-detail-header">
+      <div class="blog-detail-header-container">
+        <a href="../../" class="blog-detail-logo">Frontend Dev</a>
+        <nav class="blog-detail-nav">
+          <a href="../../" class="blog-detail-nav-link">Home</a>
+          <a href="#" class="blog-detail-nav-link">Case Studies</a>
+          <a href="#" class="blog-detail-nav-link">Services</a>
+          <a href="#" class="blog-detail-nav-link">About</a>
+          <a href="#" class="blog-detail-nav-link">News</a>
+          <a href="#" class="blog-detail-nav-link">Pages</a>
+        </nav>
+        <div class="blog-detail-header-actions">
+          <a href="#" class="blog-detail-btn blog-detail-btn--primary">Get In Touch</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="blog-detail-main">
+      <!-- 제목 섹션 -->
+      <div class="blog-detail-header-section">
+        <div class="blog-detail-date">23RD JANUARY 2025</div>
+        <h1 class="blog-detail-title">이벤트 루프란 무엇인가?</h1>
+        <p class="blog-detail-subtitle">
+          JavaScript의 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘에 대해 깊이 있게 알아봅니다.
+        </p>
+      </div>
+
+      <!-- 히어로 이미지 -->
+      <div class="blog-detail-hero">
+        <img
+          src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=600&fit=crop"
+          alt="Event Loop"
+          class="blog-detail-hero-image"
+        />
+      </div>
+
+      <!-- 콘텐츠 레이아웃 -->
+      <div class="blog-detail-content-wrapper">
+        <article class="blog-detail-content">
           <h2>이벤트 루프란 무엇인가?</h2>
           <p class="pre-line"><strong>JavaScript가 싱글 스레드 환경에서 비동기 작업을 처리하기 위한 실행 메커니즘입니다.</strong>
             JavaScript 엔진은 한 번에 하나의 작업만 처리하지만, 이벤트 루프를 통해 논블로킹(Non-Blocking) 방식의 비동기
@@ -127,28 +167,63 @@
               </ul>
             </li>
           </ol>
-        </div>
-      </section>
-    </main>
+        </article>
 
-    <!-- <script>
-      alert("동기 코드 1");
-      setTimeout(() => {
-        alert("매크로태스크 2");
-      }, 0);
-      Promise.resolve().then(() => {
-        alert("마이크로태스크 3");
-      });
-      Promise.resolve().then(() => {
-        alert("마이크로태스크 4.1");
-        setTimeout(() => {
-          alert("매크로태스크 4.2");
-        }, 0);
-        Promise.resolve().then(() => {
-          alert("마이크로태스크 4.3");
-        });
-      });
-      alert("동기 코드 5");
-    </script> -->
+        <!-- 사이드바 -->
+        <aside class="blog-detail-sidebar">
+          <!-- Share 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">SHARE</h3>
+            <div class="blog-detail-share-links">
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>INSTAGRAM</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>TWITTER</span>
+              </a>
+              <a href="#" class="blog-detail-share-link" target="_blank" rel="noopener noreferrer">
+                <span>FACEBOOK</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Details 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">DETAILS</h3>
+            <div class="blog-detail-details">
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">DATE</span>
+                <span class="blog-detail-detail-value">23rd January 2025</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">CATEGORY</span>
+                <span class="blog-detail-detail-value">JavaScript</span>
+              </div>
+              <div class="blog-detail-detail-item">
+                <span class="blog-detail-detail-label">READING</span>
+                <span class="blog-detail-detail-value">10 Min</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author 섹션 -->
+          <div class="blog-detail-sidebar-section">
+            <h3 class="blog-detail-sidebar-title">AUTHOR</h3>
+            <div class="blog-detail-author">
+              <div class="blog-detail-author-info">
+                <div class="blog-detail-author-avatar"></div>
+                <div class="blog-detail-author-details">
+                  <div class="blog-detail-author-name">Frontend Dev</div>
+                  <div class="blog-detail-author-title">DEVELOPER</div>
+                </div>
+              </div>
+              <p class="blog-detail-author-bio">
+                프론트엔드 개발 학습 자료를 체계적으로 정리하고 공유하는 개발자입니다.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
   </body>
 </html>
