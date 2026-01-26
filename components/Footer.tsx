@@ -6,10 +6,12 @@ import { Container } from '@/styles/common'
 const StyledFooter = styled.footer`
   background-color: ${props => props.theme.colors.gray900};
   color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing['4xl']} ${props => props.theme.spacing.lg} ${props => props.theme.spacing['2xl']};
+  padding: ${props => props.theme.spacing['4xl']} ${props => props.theme.spacing.lg}
+    ${props => props.theme.spacing['2xl']};
 
   @media (max-width: 768px) {
-    padding: ${props => props.theme.spacing['2xl']} ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
+    padding: ${props => props.theme.spacing['2xl']} ${props => props.theme.spacing.md}
+      ${props => props.theme.spacing.xl};
   }
 `
 
@@ -41,7 +43,7 @@ const Copyright = styled.p`
 
 export default function Footer() {
   return (
-    <StyledFooter>
+    <StyledFooter role="contentinfo">
       <FooterContainer>
         <Bottom>
           <Logo>Frontend Dev</Logo>

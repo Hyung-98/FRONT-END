@@ -3,7 +3,7 @@ import { theme } from '@/styles/theme'
 import styled from 'styled-components'
 
 export const Main = styled.main`
-  max-width: 1200px;
+  max-width: ${theme.breakpoints.wide};
   margin: 0 auto;
   padding: ${theme.spacing['4xl']} ${theme.spacing.lg};
 
@@ -129,6 +129,12 @@ export const Content = styled.article`
     @media (max-width: 768px) {
       font-size: ${theme.typography.fontSize.md};
     }
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 
   strong {
@@ -263,7 +269,8 @@ export const Content = styled.article`
     font-size: 85%;
     background-color: rgba(175, 184, 193, 0.2);
     border-radius: ${theme.borderRadius.md};
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    font-family:
+      ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
   }
 
   pre {

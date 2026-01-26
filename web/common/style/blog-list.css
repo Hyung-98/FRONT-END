@@ -192,7 +192,9 @@
   background-color: #fff;
   border-radius: 12px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   border: 1px solid var(--gray-200);
   text-decoration: none;
   color: inherit;

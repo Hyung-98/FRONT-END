@@ -53,57 +53,6 @@ const Logo = styled(Link)`
   }
 `
 
-const Nav = styled.nav`
-  display: flex;
-  align-items: center;
-  gap: 40px;
-  flex: 1;
-  justify-content: center;
-
-  @media (max-width: 1024px) {
-    gap: ${props => props.theme.spacing.lg};
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-
-const NavLink = styled.a`
-  text-decoration: none;
-  color: ${props => props.theme.colors.gray700};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  transition: color ${props => props.theme.transitions.fast};
-  position: relative;
-  padding: ${props => props.theme.spacing.sm} 0;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: ${props => props.theme.colors.gray900};
-    transition: width ${props => props.theme.transitions.normal} ease;
-  }
-
-  &:hover {
-    color: ${props => props.theme.colors.gray900};
-  }
-
-  &:hover::after {
-    width: 100%;
-  }
-
-  @media (max-width: 1024px) {
-    font-size: 13px;
-  }
-`
-
 const Actions = styled.div`
   display: flex;
   align-items: center;
@@ -124,22 +73,13 @@ const DetailButton = styled(ButtonLink)`
   }
 `
 
-export default function DetailHeader() {
+export default function DetailHeader({ slug }: { slug: string }) {
   return (
-    <StyledHeader >
+    <StyledHeader>
       <HeaderContainer>
-        <Logo href="/" scroll={false}>Frontend Dev</Logo>
-        {/* <Nav>
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="#">Case Studies</NavLink>
-          <NavLink href="#">Services</NavLink>
-          <NavLink href="#">About</NavLink>
-          <NavLink href="#">News</NavLink>
-          <NavLink href="#">Pages</NavLink>
-        </Nav> */}
-        <Actions>
-          <DetailButton href="/admin/posts/new" $variant="primary">New Post</DetailButton>
-        </Actions>
+        <Logo href="/" scroll={false}>
+          Frontend Dev
+        </Logo>
       </HeaderContainer>
     </StyledHeader>
   )

@@ -22,12 +22,26 @@ const ShareLink = styled(Link)`
     border-color: ${theme.colors.gray300};
     color: ${theme.colors.gray900};
   }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.blue500};
+    outline-offset: 2px;
+  }
 `
 
 interface ShareLinkProps {
   href: string
   children: React.ReactNode
+  'aria-label'?: string
 }
-export default function ShareLinkComponent({ href, children }: ShareLinkProps): JSX.Element {
-  return <ShareLink href={href} target="_blank" rel="noopener noreferrer">{children}</ShareLink>
+export default function ShareLinkComponent({
+  href,
+  children,
+  'aria-label': ariaLabel,
+}: ShareLinkProps): JSX.Element {
+  return (
+    <ShareLink href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel}>
+      {children}
+    </ShareLink>
+  )
 }

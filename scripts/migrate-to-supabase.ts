@@ -35,7 +35,7 @@
 // async function migratePosts() {
 //   const postsArray = Object.values(posts)
 //   const total = postsArray.length
-  
+
 //   console.log(`\n📝 Starting migration of ${total} posts...\n`)
 
 //   let successCount = 0
@@ -44,7 +44,7 @@
 //   for (let i = 0; i < postsArray.length; i++) {
 //     const post = postsArray[i]
 //     const progress = `[${i + 1}/${total}]`
-    
+
 //     try {
 //       // 먼저 중복 체크
 //       const { data: existing, error: checkError } = await supabase
@@ -71,7 +71,7 @@
 //           hero_image: post.heroImage,
 //         })
 //         .select()
-      
+
 //       if (error) {
 //         console.error(`${progress} ❌ Error inserting ${post.slug}:`, error.message)
 //         errorCount++

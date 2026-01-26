@@ -23,7 +23,9 @@ const FeaturedCard = styled(Link)`
   min-height: 500px;
   display: flex;
   align-items: flex-end;
-  transition: transform ${theme.transitions.fast}, box-shadow ${theme.transitions.fast};
+  transition:
+    transform ${theme.transitions.fast},
+    box-shadow ${theme.transitions.fast};
 
   &:hover {
     transform: translateY(-4px);
@@ -95,10 +97,17 @@ interface FeaturedCardProps {
 export default function FeaturedCardComponent({ post }: FeaturedCardProps) {
   return (
     <Featured>
-      <FeaturedCard href={`/detail/${post.slug}`} scroll={false}>
+      <FeaturedCard
+        href={`/detail/${post.slug}`}
+        scroll={false}
+        aria-label={`${post.title} - 추천 포스트 읽기`}
+      >
         <FeaturedImageWrapper>
           <Image
-            src={post.heroImage || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop"}
+            src={
+              post.heroImage ||
+              'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=600&fit=crop'
+            }
             alt={post.title}
             width={1200}
             height={600}

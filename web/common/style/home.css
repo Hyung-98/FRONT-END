@@ -176,7 +176,7 @@ body {
 }
 
 .topic-link::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -193,7 +193,7 @@ body {
   transform: scaleY(1);
 }
 
-.topic-link[aria-disabled="true"] {
+.topic-link[aria-disabled='true'] {
   opacity: 0.6;
   cursor: not-allowed;
 }

@@ -85,18 +85,22 @@ const CardDate = styled.span`
 
 interface ListCardProps {
   post: BlogPost
+  priority?: boolean
 }
 
-export default function ListCardComponent({ post }: ListCardProps) {
+export default function ListCardComponent({ post, priority = false }: ListCardProps) {
   return (
-    <ListCard href={`/detail/${post.slug}`} scroll={false}>
+    <ListCard href={`/detail/${post.slug}`} scroll={false} aria-label={`${post.title} 포스트 읽기`}>
       <CardImageWrapper>
         <Image
-          src={post.heroImage || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=240&fit=crop"}
+          src={
+            post.heroImage ||
+            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=240&fit=crop'
+          }
           alt={post.title}
           fill
           sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          priority={true}
+          priority={priority}
           style={{ objectFit: 'cover' }}
         />
       </CardImageWrapper>
@@ -108,7 +112,7 @@ export default function ListCardComponent({ post }: ListCardProps) {
         <CardDescription>{post.subtitle}</CardDescription>
         <CardMeta>
           <CardAuthor>
-            <CardAvatar />
+            <CardAvatar aria-hidden="true" />
             <span>Frontend Dev</span>
           </CardAuthor>
           <CardDate>• {post.date}</CardDate>

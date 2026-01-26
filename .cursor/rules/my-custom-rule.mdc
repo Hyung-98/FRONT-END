@@ -1,0 +1,631 @@
+---
+name: frontend-blog-rules
+description: Next.js 14 블로그 프로젝트 개발 규칙 및 컨벤션
+---
+
+# 프로젝트 개요
+
+이 프로젝트는 Next.js 14 App Router를 사용하는 프론트엔드 개발 블로그입니다.
+
+## 기술 스택
+
+- **프레임워크**: Next.js 14 (App Router)
+- **언어**: TypeScript (strict mode)
+- **UI 라이브러리**: React 18
+- **스타일링**: Styled-components v6
+- **데이터베이스**: Supabase
+- **마크다운**: react-markdown, remark-gfm
+
+## 디렉토리 구조
+
+```
+app/                    # Next.js App Router
+├── api/               # API 라우트 (클라이언트에서만 사용)
+├── admin/             # 관리자 페이지
+├── detail/            # 블로그 상세 페이지
+├── layout.tsx         # 루트 레이아웃
+├── page.tsx           # 메인 페이지
+└── styles.ts          # 페이지 전용 스타일
+
+components/            # 재사용 가능한 React 컴포넌트
+lib/                   # 유틸리티 및 라이브러리
+├── supabase/         # Supabase 클라이언트 및 데이터 페칭 함수
+styles/               # 공통 스타일 및 테마
+├── theme.ts          # 테마 정의
+└── common.ts         # 전역 공통 스타일 컴포넌트
+```
+
+# 아키텍처 패턴
+
+## Server Component vs Client Component
+
+### Server Component (기본값)
+
+**사용 시기:**
+- 데이터 페칭이 필요한 경우
+- SEO가 중요한 페이지
+- 정적 콘텐츠 렌더링
+- 서버에서만 실행되어야 하는 로직
+
+**예시:**
+```typescript
+// app/detail/[slug]/page.tsx
+import { getPostBySlug } from '@/lib/supabase/posts'
+
+export default async function BlogPostPage({ params }: PageProps) {
+  const post = await getPostBySlug(params.slug) // 서버에서 실행
+  return <div>{post.title}</div>
+}
+```
+
+### Client Component ('use client')
+
+**사용 시기:**
+- 사용자 인터랙션이 필요한 경우 (onClick, onChange 등)
+- 브라우저 API 사용 (localStorage, window 등)
+- 상태 관리 (useState, useEffect 등)
+- Link 컴포넌트와 hover 효과가 있는 스타일 컴포넌트
+
+**예시:**
+```typescript
+// components/DetailHeader.tsx
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+
+export default function DetailHeader({ slug }: { slug: string }) {
+  return <Link href={`/admin/posts/edit/${slug}`}>수정</Link>
+}
+```
+
+## 데이터 페칭 패턴
+
+### 서버 컴포넌트: `lib/supabase/` 직접 사용
+
+**항상 서버 컴포넌트에서는 `lib/supabase/posts.ts`의 함수를 직접 사용합니다.**
+
+```typescript
+// ✅ 올바른 사용
+// app/page.tsx, app/detail/[slug]/page.tsx
+import { getAllPosts, getPostBySlug } from '@/lib/supabase/posts'
+
+export default async function Page() {
+  const posts = await getAllPosts() // 서버에서 직접 호출
+  return <div>{/* ... */}</div>
+}
+```
+
+**장점:**
+- 클라이언트 번들 크기 감소
+- Next.js 캐싱 활용 가능 (`revalidate`)
+- 타입 안정성
+- HTTP 오버헤드 없음
+- 더 빠른 응답 시간
+
+### 클라이언트 컴포넌트: `app/api/` 라우트 사용
+
+**클라이언트 컴포넌트에서는 API 라우트를 통해 데이터를 가져옵니다.**
+
+```typescript
+// ✅ 올바른 사용
+// app/admin/posts/new/page.tsx
+'use client'
+
+const response = await fetch('/api/rest/posts', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+})
+```
+
+**사용 시나리오:**
+- 폼 제출 (POST, PUT, DELETE)
+- 실시간 데이터 업데이트
+- 사용자 인터랙션에 따른 동적 요청
+
+### API 라우트: 내부적으로 `lib/supabase/` 사용
+
+```typescript
+// app/api/rest/posts/route.ts
+import { getAllPosts } from '@/lib/supabase/posts'
+import { supabaseAdmin } from '@/lib/supabase/server'
+
+export async function GET() {
+  const posts = await getAllPosts() // lib 함수 재사용
+  return NextResponse.json({ data: posts })
+}
+
+export async function POST(request: Request) {
+  const body = await request.json()
+  const { data, error } = await supabaseAdmin
+    .from('posts')
+    .insert(body)
+  // ...
+}
+```
+
+# 스타일링 컨벤션
+
+## 하이브리드 접근법
+
+프로젝트는 세 가지 스타일링 패턴을 사용합니다:
+
+### 1. `app/styles.ts` 패턴 (페이지 전용 스타일)
+
+**사용 시기:**
+- 페이지 전용 스타일 (다른 곳에서 재사용하지 않음)
+- 복잡한 레이아웃 스타일 (여러 요소가 함께 사용)
+- 서버 컴포넌트에서만 사용하는 스타일 (Link나 hover 효과 없음)
+
+**예시:**
+```typescript
+// app/styles.ts
+import styled from 'styled-components'
+
+export const Main = styled.main`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing['2xl']};
+`
+
+export const HeaderSection = styled.div`
+  margin-bottom: ${props => props.theme.spacing.xl};
+`
+
+// app/detail/[slug]/page.tsx
+import * as S from '../../styles'
+
+export default async function Page() {
+  return (
+    <S.Main>
+      <S.HeaderSection>...</S.HeaderSection>
+    </S.Main>
+  )
+}
+```
+
+### 2. `components/` 패턴 (재사용 가능한 컴포넌트)
+
+**사용 시기:**
+- 여러 페이지에서 재사용하는 컴포넌트
+- 클라이언트 기능이 필요한 컴포넌트 (Link, hover, onClick)
+- 비즈니스 로직이 있는 컴포넌트
+
+**예시:**
+```typescript
+// components/DetailHeader.tsx
+'use client'
+
+import Link from 'next/link'
+import styled from 'styled-components'
+
+const StyledHeader = styled.header`
+  background-color: ${props => props.theme.colors.white};
+  border-bottom: 1px solid ${props => props.theme.colors.gray200};
+`
+
+const DetailButton = styled(Link)`
+  padding: 12px 24px;
+  border: 2px solid ${props => props.theme.colors.gray900};
+  // ...
+`
+
+export default function DetailHeader({ slug }: { slug: string }) {
+  return (
+    <StyledHeader>
+      <DetailButton href={`/admin/posts/edit/${slug}`}>수정</DetailButton>
+    </StyledHeader>
+  )
+}
+```
+
+### 3. `styles/common.ts` 패턴 (전역 공통 컴포넌트)
+
+**사용 시기:**
+- 전역적으로 사용하는 기본 컴포넌트
+- Container, Button, Grid, Typography 등
+
+**예시:**
+```typescript
+// styles/common.ts
+import styled from 'styled-components'
+import { theme } from './theme'
+
+export const Container = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+`
+
+export const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
+  padding: 12px 24px;
+  border-radius: ${theme.borderRadius.md};
+  // ...
+`
+
+// 사용
+import { Container, Button } from '@/styles/common'
+```
+
+## Styled-components v6 RSC 지원
+
+**styled-components v6.3.0+**부터는 React Server Components에서 `'use client'` 없이도 작동합니다.
+
+**규칙:**
+- 서버 컴포넌트에서 styled-components 직접 사용 가능
+- Link와 hover 효과만 클라이언트 컴포넌트로 분리
+- 최소한의 클라이언트 번들 크기 유지
+
+## 테마 시스템
+
+**항상 `styles/theme.ts`의 테마를 사용합니다.**
+
+```typescript
+// ✅ 올바른 사용
+const StyledDiv = styled.div`
+  color: ${props => props.theme.colors.gray900};
+  padding: ${props => props.theme.spacing.md};
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  border-radius: ${props => props.theme.borderRadius.md};
+`
+
+// ❌ 잘못된 사용 (하드코딩)
+const StyledDiv = styled.div`
+  color: #171717;
+  padding: 16px;
+`
+```
+
+**테마 구조:**
+- `theme.colors` - 색상 팔레트
+- `theme.spacing` - 간격 값 (xs, sm, md, lg, xl, 2xl, 3xl, 4xl)
+- `theme.typography` - 폰트 크기, 굵기, 줄 높이
+- `theme.borderRadius` - 둥근 모서리 값
+- `theme.shadows` - 그림자 값
+- `theme.transitions` - 전환 시간
+- `theme.breakpoints` - 반응형 브레이크포인트
+
+## 반응형 디자인
+
+**항상 모바일 우선 접근법을 사용합니다.**
+
+```typescript
+const StyledDiv = styled.div`
+  padding: ${props => props.theme.spacing.md};
+
+  @media (max-width: 1024px) {
+    padding: ${props => props.theme.spacing.sm};
+  }
+
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.spacing.xs};
+  }
+`
+```
+
+**브레이크포인트:**
+- `768px` - 태블릿
+- `1024px` - 데스크톱
+- `1280px` - 와이드 스크린
+
+# 컴포넌트 작성 규칙
+
+## 파일 구조
+
+```typescript
+// 1. 'use client' 디렉티브 (필요한 경우)
+'use client'
+
+// 2. Import 문
+import { useState } from 'react'
+import Link from 'next/link'
+import styled from 'styled-components'
+import { Container } from '@/styles/common'
+
+// 3. Styled Components 정의
+const StyledComponent = styled.div`
+  // styles
+`
+
+// 4. Props 타입 정의
+interface ComponentProps {
+  slug: string
+  title?: string
+}
+
+// 5. 컴포넌트 정의
+export default function Component({ slug, title }: ComponentProps) {
+  // component logic
+  return <StyledComponent>...</StyledComponent>
+}
+```
+
+## Props 타입 정의
+
+**항상 Props에 대한 타입을 명시합니다.**
+
+```typescript
+// ✅ 올바른 사용
+interface DetailHeaderProps {
+  slug: string
+  title?: string
+}
+
+export default function DetailHeader({ slug, title }: DetailHeaderProps) {
+  // ...
+}
+
+// ❌ 잘못된 사용 (타입 없음)
+export default function DetailHeader({ slug, title }) {
+  // ...
+}
+```
+
+## 'use client' 디렉티브
+
+**다음 경우에만 'use client'를 사용합니다:**
+- useState, useEffect 등 React 훅 사용
+- onClick, onChange 등 이벤트 핸들러
+- Link 컴포넌트와 hover 효과가 있는 스타일 컴포넌트
+- 브라우저 API 사용
+
+**서버 컴포넌트가 기본값이므로, 클라이언트 기능이 필요할 때만 명시합니다.**
+
+# TypeScript 컨벤션
+
+## 타입 정의 위치
+
+- **데이터베이스 타입**: `lib/supabase/types.ts`
+- **컴포넌트 Props**: 컴포넌트 파일 내부에 정의
+- **유틸리티 타입**: `lib/` 디렉토리 내 적절한 위치
+
+## 인터페이스 vs Type
+
+**인터페이스 사용:**
+- 컴포넌트 Props
+- 객체 구조 정의
+- 확장 가능한 타입
+
+```typescript
+interface BlogPost {
+  slug: string
+  title: string
+  content: string
+}
+
+interface PageProps {
+  params: {
+    slug: string
+  }
+}
+```
+
+**Type 사용:**
+- 유니온 타입
+- 교차 타입
+- 유틸리티 타입
+
+```typescript
+type Status = 'pending' | 'success' | 'error'
+type Theme = typeof theme
+```
+
+## 타입 안정성
+
+**항상 타입을 명시하고, any 사용을 피합니다.**
+
+```typescript
+// ✅ 올바른 사용
+const posts: BlogPost[] = await getAllPosts()
+
+// ❌ 잘못된 사용
+const posts: any = await getAllPosts()
+```
+
+# 네이밍 컨벤션
+
+## 파일명
+
+- **컴포넌트 파일**: PascalCase (예: `DetailHeader.tsx`, `HomeContent.tsx`)
+- **유틸리티 파일**: camelCase (예: `posts.ts`, `client.ts`)
+- **스타일 파일**: kebab-case 또는 camelCase (예: `detail-styles.ts`, `common.ts`)
+- **페이지 파일**: Next.js 규칙에 따라 소문자 (예: `page.tsx`, `layout.tsx`)
+
+## 컴포넌트명
+
+**PascalCase 사용**
+
+```typescript
+export default function DetailHeader() { }
+export default function HomeContent() { }
+export default function ListCard() { }
+```
+
+## 변수명 및 함수명
+
+**camelCase 사용**
+
+```typescript
+const blogPost = await getPostBySlug(slug)
+const handleSubmit = async () => { }
+const formData = { }
+```
+
+## 상수명
+
+**UPPER_SNAKE_CASE 사용 (전역 상수) 또는 camelCase (로컬 상수)**
+
+```typescript
+// 전역 상수
+export const MAX_POSTS = 100
+export const API_BASE_URL = 'https://api.example.com'
+
+// 로컬 상수
+const defaultCategory = 'JavaScript'
+```
+
+## Styled Components 네이밍
+
+**PascalCase 사용, 의미 있는 이름 사용**
+
+```typescript
+// ✅ 올바른 사용
+const StyledHeader = styled.header`...`
+const HeaderContainer = styled(Container)`...`
+const DetailButton = styled(ButtonLink)`...`
+
+// ❌ 잘못된 사용
+const Div = styled.div`...`
+const Wrapper = styled.div`...`
+```
+
+# 코드 스타일
+
+## Import 순서
+
+1. React 및 Next.js 관련
+2. 외부 라이브러리
+3. 내부 컴포넌트
+4. 내부 유틸리티 및 타입
+5. 스타일 관련
+
+```typescript
+// 1. React 및 Next.js
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+
+// 2. 외부 라이브러리
+import styled from 'styled-components'
+import ReactMarkdown from 'react-markdown'
+
+// 3. 내부 컴포넌트
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+
+// 4. 내부 유틸리티
+import { getAllPosts } from '@/lib/supabase/posts'
+import type { BlogPost } from '@/lib/supabase/posts'
+
+// 5. 스타일
+import { Container } from '@/styles/common'
+import { theme } from '@/styles/theme'
+import * as S from '../styles'
+```
+
+## 주석 작성
+
+**한국어 주석을 사용합니다. 복잡한 로직에만 주석을 작성합니다.**
+
+```typescript
+// Next.js 캐싱: 60초마다 재검증 (ISR)
+export const revalidate = 60
+
+// slug 자동 생성 (title 기반)
+if (name === 'title') {
+  const slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  setFormData(prev => ({ ...prev, slug }))
+}
+```
+
+## 에러 처리
+
+**항상 에러를 적절히 처리합니다.**
+
+```typescript
+try {
+  const posts = await getAllPosts()
+  return <div>{/* ... */}</div>
+} catch (error) {
+  console.error('Error fetching posts:', error)
+  return <div>Error loading posts</div>
+}
+```
+
+**API 라우트에서:**
+
+```typescript
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    
+    if (!body.slug || !body.title) {
+      return NextResponse.json(
+        { success: false, error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+    
+    // ...
+  } catch (error: any) {
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 500 }
+    )
+  }
+}
+```
+
+# 추가 규칙
+
+## Next.js 특정 패턴
+
+### generateStaticParams
+
+**동적 라우트에서 정적 생성을 위해 사용합니다.**
+
+```typescript
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs()
+  return slugs.map(slug => ({ slug }))
+}
+```
+
+### revalidate
+
+**ISR을 위해 revalidate 값을 설정합니다.**
+
+```typescript
+export const revalidate = 60 // 60초마다 재검증
+```
+
+### notFound
+
+**리소스를 찾을 수 없을 때 사용합니다.**
+
+```typescript
+const post = await getPostBySlug(params.slug)
+if (!post) {
+  notFound()
+}
+```
+
+## Supabase 사용
+
+**항상 타입 안전성을 위해 Database 타입을 사용합니다.**
+
+```typescript
+import type { Database } from './types'
+
+type Post = Database['public']['Tables']['posts']['Row']
+```
+
+**서버 컴포넌트에서는 `lib/supabase/posts.ts`의 함수를 사용합니다.**
+
+**클라이언트 컴포넌트나 API 라우트에서 직접 쿼리가 필요한 경우:**
+- 서버 컴포넌트: `lib/supabase/server.ts`의 `supabaseAdmin` 사용
+- 클라이언트 컴포넌트: `lib/supabase/client.ts`의 `supabase` 사용
+
+## 코드 일관성 체크리스트
+
+새 코드를 작성할 때 다음을 확인하세요:
+
+- [ ] Server/Client Component가 올바르게 분리되었나요?
+- [ ] 데이터 페칭이 올바른 패턴을 사용하나요? (서버: lib/supabase, 클라이언트: API)
+- [ ] 스타일이 올바른 위치에 있나요? (페이지 전용: app/styles.ts, 재사용: components/, 전역: styles/common.ts)
+- [ ] 테마 시스템을 사용하고 있나요? (하드코딩된 값 없음)
+- [ ] TypeScript 타입이 모두 명시되어 있나요?
+- [ ] 네이밍 컨벤션이 일치하나요?
+- [ ] Import 순서가 올바른가요?
+- [ ] 에러 처리가 적절한가요?

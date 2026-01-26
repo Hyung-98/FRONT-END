@@ -227,7 +227,8 @@ export const Card = styled.div`
   border-radius: ${theme.borderRadius.xl};
   border: 1px solid ${theme.colors.gray200};
   overflow: hidden;
-  transition: transform ${theme.transitions.fast},
+  transition:
+    transform ${theme.transitions.fast},
     box-shadow ${theme.transitions.fast};
 
   &:hover {
@@ -240,9 +241,7 @@ export const Card = styled.div`
 export const Grid = styled.div<{ columns?: number; gap?: string }>`
   display: grid;
   grid-template-columns: ${props =>
-    props.columns
-      ? `repeat(${props.columns}, 1fr)`
-      : 'repeat(auto-fill, minmax(360px, 1fr))'};
+    props.columns ? `repeat(${props.columns}, 1fr)` : 'repeat(auto-fill, minmax(360px, 1fr))'};
   gap: ${({ gap }) => gap || '32px'};
 
   @media (max-width: 1024px) {
