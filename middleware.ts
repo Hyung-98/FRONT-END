@@ -1,17 +1,21 @@
+import { serverEnv } from '@/lib/config/env'
 import { createServerClient } from '@supabase/ssr'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { serverEnv } from '@/lib/config/env'
-import type { CookieOptions } from '@/lib/types/cookies'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
 
   // 관리자 경로 보호
   if (pathname.startsWith('/admin')) {
     // 로그인 페이지는 제외
     if (pathname === '/admin/login') {
-      return NextResponse.next()
+      return response
     }
 
     // 쿠키에서 세션 확인
@@ -20,14 +24,17 @@ export async function middleware(request: NextRequest) {
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
+        getAll() {
+          return request.cookies.getAll().map(cookie => ({
+            name: cookie.name,
+            value: cookie.value,
+          }))
         },
-        set(name: string, value: string, options?: Partial<CookieOptions>) {
-          request.cookies.set({ name, value, ...options })
-        },
-        remove(name: string, options?: Partial<CookieOptions>) {
-          request.cookies.delete({ name, ...options })
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value)
+            response.cookies.set(name, value, options)
+          })
         },
       },
     })
@@ -54,14 +61,17 @@ export async function middleware(request: NextRequest) {
 
     const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
+        getAll() {
+          return request.cookies.getAll().map(cookie => ({
+            name: cookie.name,
+            value: cookie.value,
+          }))
         },
-        set(name: string, value: string, options?: Partial<CookieOptions>) {
-          request.cookies.set({ name, value, ...options })
-        },
-        remove(name: string, options?: Partial<CookieOptions>) {
-          request.cookies.delete({ name, ...options })
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            request.cookies.set(name, value)
+            response.cookies.set(name, value, options)
+          })
         },
       },
     })
@@ -75,7 +85,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  return NextResponse.next()
+  return response
 }
 
 export const config = {
