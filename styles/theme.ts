@@ -30,6 +30,7 @@ export const theme = {
     blue500: '#3b82f6',
     blue600: '#2563eb',
     blue700: '#1d4ed8',
+    yellow100: '#fefce8',
   },
   spacing: {
     xs: '4px',
