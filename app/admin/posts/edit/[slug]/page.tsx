@@ -27,6 +27,12 @@ import {
   Textarea,
   TwoColumnLayout,
 } from '../../../detail-styles'
+import { getAllSlugs } from '@/lib/supabase/posts'
+
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs()
+  return slugs.map(slug => ({ slug }))
+}
 
 export default function EditPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = useParams<{ slug: string }>()

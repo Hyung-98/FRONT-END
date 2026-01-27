@@ -8,6 +8,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ButtonGroup, ErrorMessage, FormContainer, SuccessMessage } from '../../../detail-styles'
+import { getAllSlugs } from '@/lib/supabase/posts'
 
 const WarningBox = styled.div`
   background-color: ${theme.colors.red50 || '#fef2f2'};
@@ -63,6 +64,11 @@ const PostInfoLabel = styled.span`
 const PostInfoValue = styled.span`
   color: ${theme.colors.gray700};
 `
+
+export async function generateStaticParams() {
+  const slugs = await getAllSlugs()
+  return slugs.map(slug => ({ slug }))
+}
 
 export default function DeletePostPage() {
   const { slug } = useParams<{ slug: string }>()
