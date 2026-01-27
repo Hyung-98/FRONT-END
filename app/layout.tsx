@@ -1,7 +1,8 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import SkipLink from '@/components/SkipLink'
 import { getClientEnvConfig } from '@/lib/config/env'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
 import StyledComponentsRegistry from './registry'
 import ScrollToTop from './ScrollToTop'
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SkipLink />
           <ScrollToTop />
           {children}
+          <SpeedInsights />
         </StyledComponentsRegistry>
       </body>
     </html>
