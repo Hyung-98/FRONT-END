@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
     "migrate": "tsx scripts/migrate-to-supabase.ts",
     "test": "jest",
     "test:watch": "jest --watch",
