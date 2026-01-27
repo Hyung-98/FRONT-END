@@ -12,6 +12,10 @@ import { checkRateLimit } from '@/lib/utils/rate-limit'
 import { sanitizeString, isValidSlug } from '@/lib/utils/sanitize'
 import { validatePostFields } from '@/lib/utils/validation'
 
+// 정적 내보내기(output: 'export') 사용 시 API 라우트는 빌드에서 자동으로 제외됨
+// 하지만 동적 라우트가 있으면 빌드 오류가 발생할 수 있으므로
+// 이 파일은 빌드 시 무시되어야 함
+
 export async function GET(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params
