@@ -1,7 +1,8 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
-import ShareLinkComponent from '@/components/ShareLink'
-import { getAllSlugs, getPostBySlug } from '@/lib/supabase/posts'
+import RelatedPosts from '@/components/RelatedPosts'
+import ShareSection from '@/components/ShareSection'
+import { getAllSlugs, getPostBySlug, getRelatedPosts } from '@/lib/supabase/posts'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -93,6 +94,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   const siteUrl = getSiteUrl()
   const url = `${siteUrl}/detail/${params.slug}`
 
+  // 관련 포스트 가져오기
+  const relatedPosts = await getRelatedPosts(params.slug, post.category, 3)
+
   // 구조화된 데이터 (JSON-LD)
   const structuredData = {
     '@context': 'https://schema.org',
@@ -157,17 +161,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <S.Sidebar>
               <S.SidebarSection>
                 <S.SidebarTitle>SHARE</S.SidebarTitle>
-                <S.ShareLinks role="list" aria-label="공유 링크">
-                  <ShareLinkComponent href="#" aria-label="Instagram에서 공유">
-                    <span>INSTAGRAM</span>
-                  </ShareLinkComponent>
-                  <ShareLinkComponent href="#" aria-label="Twitter에서 공유">
-                    <span>TWITTER</span>
-                  </ShareLinkComponent>
-                  <ShareLinkComponent href="#" aria-label="Facebook에서 공유">
-                    <span>FACEBOOK</span>
-                  </ShareLinkComponent>
-                </S.ShareLinks>
+                <ShareSection url={url} title={post.title} description={post.subtitle} />
               </S.SidebarSection>
 
               <S.SidebarSection>
@@ -205,6 +199,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               </S.SidebarSection>
             </S.Sidebar>
           </S.ContentWrapper>
+          <RelatedPosts posts={relatedPosts} />
         </S.Main>
       </main>
       <Footer />

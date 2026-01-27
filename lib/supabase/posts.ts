@@ -306,3 +306,34 @@ export async function getAllCategories(): Promise<string[]> {
   const uniqueCategories = Array.from(new Set(data.map(post => post.category)))
   return uniqueCategories
 }
+
+// 관련 포스트 가져오기 (같은 카테고리, 현재 포스트 제외)
+export async function getRelatedPosts(
+  currentSlug: string,
+  category: string,
+  limit: number = 3
+): Promise<BlogPost[]> {
+  const { data, error } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('category', category)
+    .neq('slug', currentSlug)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('Error fetching related posts:', error)
+    throw error
+  }
+
+  return (data || []).map(post => ({
+    slug: post.slug,
+    title: post.title,
+    subtitle: post.subtitle,
+    date: post.date,
+    category: post.category,
+    readingTime: post.reading_time,
+    heroImage: post.hero_image,
+    content: post.content,
+  }))
+}
