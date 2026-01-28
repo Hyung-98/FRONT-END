@@ -1,8 +1,8 @@
+import Comments from '@/components/Comments'
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import RelatedPosts from '@/components/RelatedPosts'
-import ShareSection from '@/components/ShareSection'
-import { getAllSlugs, getPostBySlug, getRelatedPosts } from '@/lib/supabase/posts'
+import { getAllSlugs, getPostBySlug, getPostIdBySlug, getRelatedPosts } from '@/lib/supabase/posts'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -94,6 +94,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   const siteUrl = getSiteUrl()
   const url = `${siteUrl}/detail/${params.slug}`
 
+  // 포스트 ID 가져오기 (댓글 시스템용)
+  const postId = await getPostIdBySlug(params.slug)
+
   // 관련 포스트 가져오기
   const relatedPosts = await getRelatedPosts(params.slug, post.category, 3)
 
@@ -160,22 +163,17 @@ export default async function BlogPostPage({ params }: PageProps) {
 
             <S.Sidebar>
               <S.SidebarSection>
-                <S.SidebarTitle>SHARE</S.SidebarTitle>
-                <ShareSection url={url} title={post.title} description={post.subtitle} />
-              </S.SidebarSection>
-
-              <S.SidebarSection>
                 <S.SidebarTitle>DETAILS</S.SidebarTitle>
-                <S.Details role="list">
-                  <S.DetailItem role="listitem">
+                <S.Details>
+                  <S.DetailItem>
                     <S.DetailLabel>DATE</S.DetailLabel>
                     <S.DetailValue>{post.date}</S.DetailValue>
                   </S.DetailItem>
-                  <S.DetailItem role="listitem">
+                  <S.DetailItem>
                     <S.DetailLabel>CATEGORY</S.DetailLabel>
                     <S.DetailValue>{post.category}</S.DetailValue>
                   </S.DetailItem>
-                  <S.DetailItem role="listitem">
+                  <S.DetailItem>
                     <S.DetailLabel>READING</S.DetailLabel>
                     <S.DetailValue>{post.readingTime}</S.DetailValue>
                   </S.DetailItem>
@@ -186,7 +184,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <S.SidebarTitle>AUTHOR</S.SidebarTitle>
                 <S.Author>
                   <S.AuthorInfo>
-                    <S.AuthorAvatar aria-hidden="true" />
+                    <S.AuthorAvatar aria-hidden="true">FD</S.AuthorAvatar>
                     <S.AuthorDetails>
                       <S.AuthorName>Frontend Dev</S.AuthorName>
                       <S.AuthorTitle>DEVELOPER</S.AuthorTitle>
@@ -199,6 +197,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               </S.SidebarSection>
             </S.Sidebar>
           </S.ContentWrapper>
+          {postId && <Comments postId={postId} />}
           <RelatedPosts posts={relatedPosts} />
         </S.Main>
       </main>

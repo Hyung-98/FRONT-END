@@ -150,13 +150,13 @@ export default function AdminPostsPage() {
         const res = await fetch('/api/rest/posts')
 
         if (!res.ok) {
-          throw new Error('Failed to fetch posts')
+          throw new Error('포스트 목록을 불러오는데 실패했습니다.')
         }
 
         const data = await res.json()
         setPosts(data.data || [])
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'Failed to load posts')
+        setError(error instanceof Error ? error.message : '포스트 목록을 불러오는데 실패했습니다.')
       } finally {
         setLoading(false)
       }
@@ -177,7 +177,7 @@ export default function AdminPostsPage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to delete post')
+        throw new Error(data.error || '포스트 삭제에 실패했습니다.')
       }
 
       setDeleteSuccess(`"${title}" 포스트가 삭제되었습니다.`)
@@ -187,7 +187,7 @@ export default function AdminPostsPage() {
         setDeleteSuccess(null)
       }, 3000)
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      const errorMessage = err instanceof Error ? err.message : '오류가 발생했습니다.'
       setError(errorMessage)
     }
   }

@@ -65,6 +65,21 @@ export async function getPostsByCategory(category: string): Promise<BlogPost[]> 
   }))
 }
 
+// 슬러그로 포스트 ID 가져오기 (댓글 시스템용)
+export async function getPostIdBySlug(slug: string): Promise<string | null> {
+  const { data, error } = await supabase.from('posts').select('id').eq('slug', slug).single()
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return null
+    }
+    console.error('Error fetching post ID:', error)
+    throw error
+  }
+
+  return data?.id || null
+}
+
 // 슬러그로 포스트 가져오기
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const { data, error } = await supabase.from('posts').select('*').eq('slug', slug).single()

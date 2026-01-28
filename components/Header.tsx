@@ -79,6 +79,32 @@ const NavLink = styled(Link)`
 
   &:hover {
     color: ${props => props.theme.colors.gray900};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${props => props.theme.colors.blue500};
+    outline-offset: 2px;
+    border-radius: ${props => props.theme.borderRadius.sm};
+  }
+`
+
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${props => props.theme.colors.gray900};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  letter-spacing: 0.3px;
+  transition: color ${props => props.theme.transitions.fast};
+
+  &:hover {
+    color: ${props => props.theme.colors.gray900};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
   }
 
   &:focus-visible {
@@ -142,20 +168,42 @@ export default function Header() {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [user, setUser] = useState<AppUser>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    const getUser = async () => {
+    const loadUserAndRole = async () => {
       const {
-        data: { user },
+        data: { user: authUser },
       } = await supabase.auth.getUser()
-      setUser(user)
+      setUser(authUser)
+      if (authUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authUser.id)
+          .single()
+        setIsAdmin(profile?.role === 'admin')
+      } else {
+        setIsAdmin(false)
+      }
     }
-    getUser()
+    loadUserAndRole()
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const authUser = session?.user ?? null
+      setUser(authUser)
+      if (authUser) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authUser.id)
+          .single()
+        setIsAdmin(profile?.role === 'admin')
+      } else {
+        setIsAdmin(false)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -166,6 +214,13 @@ export default function Header() {
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
     }
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    router.push('/')
+    router.refresh()
   }
 
   return (
@@ -192,19 +247,27 @@ export default function Header() {
         </SearchForm>
         {user && (
           <Nav role="navigation" aria-label="주요 네비게이션">
-            <NavLink
-              href="/admin/posts/new"
-              aria-label="새로운 포스트 작성 페이지로 이동"
-              scroll={false}
-            >
-              새로운 포스트 작성
+            <NavLink href="/user/settings" aria-label="프로필 설정" scroll={false}>
+              프로필 설정
             </NavLink>
+            <LogoutButton type="button" onClick={handleLogout} aria-label="로그아웃">
+              로그아웃
+            </LogoutButton>
+            {isAdmin && (
+              <NavLink
+                href="/admin/posts/new"
+                aria-label="새로운 포스트 작성 페이지로 이동"
+                scroll={false}
+              >
+                새로운 포스트 작성
+              </NavLink>
+            )}
           </Nav>
         )}
         {!user && (
           <Nav role="navigation" aria-label="주요 네비게이션">
-            <NavLink href="/admin/login" aria-label="관리자 로그인 페이지로 이동" scroll={false}>
-              관리자 로그인
+            <NavLink href="/login" aria-label="로그인 페이지로 이동" scroll={false}>
+              로그인
             </NavLink>
           </Nav>
         )}

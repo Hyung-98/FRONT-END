@@ -122,16 +122,24 @@ export const ButtonGroup = styled.div`
 `
 
 export const ErrorMessage = styled.div`
+  max-width: 400px;
+  margin: 0 auto;
   color: ${theme.colors.red500 || '#ef4444'};
   font-size: ${theme.typography.fontSize.sm};
   margin-top: ${theme.spacing.xs};
+  margin-bottom: ${theme.spacing.lg};
+  text-align: left;
 `
 
 export const SuccessMessage = styled.div`
+  max-width: 400px;
+  margin: 0 auto;
   color: ${theme.colors.green500 || '#22c55e'};
   font-size: ${theme.typography.fontSize.sm};
   padding: ${theme.spacing.md};
+  text-align: left;
   background-color: ${theme.colors.green50 || '#f0fdf4'};
   border-radius: ${theme.borderRadius.md};
   border: 1px solid ${theme.colors.green200 || '#bbf7d0'};
+  margin-bottom: ${theme.spacing.lg};
 `

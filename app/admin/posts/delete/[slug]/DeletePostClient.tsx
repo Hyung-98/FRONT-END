@@ -82,7 +82,7 @@ export default function DeletePostClient() {
         const res = await fetch(`/api/rest/posts/${slug}`)
 
         if (!res.ok) {
-          throw new Error('Failed to fetch post')
+          throw new Error('포스트를 불러오는데 실패했습니다.')
         }
 
         const data = await res.json()
@@ -92,7 +92,7 @@ export default function DeletePostClient() {
           category: data.category || '',
         })
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'Failed to load post')
+        setError(error instanceof Error ? error.message : '포스트를 불러오는데 실패했습니다.')
       }
     }
 
@@ -117,7 +117,7 @@ export default function DeletePostClient() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to delete post')
+        throw new Error(data.error || '포스트 삭제에 실패했습니다.')
       }
 
       setSuccess(true)
@@ -125,7 +125,7 @@ export default function DeletePostClient() {
         router.push('/')
       }, 1500)
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      const errorMessage = err instanceof Error ? err.message : '오류가 발생했습니다.'
       setError(errorMessage)
     } finally {
       setLoading(false)

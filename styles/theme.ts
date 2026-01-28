@@ -28,6 +28,7 @@ export const theme = {
     blue50: '#eff6ff',
     blue100: '#dbeafe',
     blue200: '#bfdbfe',
+    blue300: '#93c5fd',
     blue500: '#3b82f6',
     blue600: '#2563eb',
     blue700: '#1d4ed8',

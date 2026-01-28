@@ -103,7 +103,7 @@ export default function NewPostPage() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to create post')
+        throw new Error(data.error || '포스트 생성에 실패했습니다.')
       }
 
       setSuccess(true)
@@ -111,7 +111,7 @@ export default function NewPostPage() {
         router.push(`/detail/${formData.slug}`)
       }, 1500)
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      const errorMessage = err instanceof Error ? err.message : '오류가 발생했습니다.'
       setError(errorMessage)
     } finally {
       setLoading(false)

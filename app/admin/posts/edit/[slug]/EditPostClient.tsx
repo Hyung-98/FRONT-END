@@ -62,19 +62,19 @@ export default function EditPostClient() {
         const res = await fetch(`/api/rest/posts/${slug}`)
 
         if (!res.ok) {
-          throw new Error('Failed to fetch post')
+          throw new Error('포스트를 불러오는데 실패했습니다.')
         }
 
         const response = await res.json()
 
         // API 응답 구조 확인: { success: true, data: { slug, title, ... } }
         if (!response.success) {
-          throw new Error(response.error || 'Failed to fetch post')
+          throw new Error(response.error || '포스트를 불러오는데 실패했습니다.')
         }
 
         const post = response.data
         if (!post) {
-          throw new Error('Post data not found')
+          throw new Error('포스트 데이터를 찾을 수 없습니다.')
         }
 
         // API 응답의 snake_case를 camelCase로 변환 (getPostBySlug는 이미 camelCase 반환)
@@ -97,7 +97,7 @@ export default function EditPostClient() {
           content: post.content || '',
         })
       } catch (error) {
-        setError(error instanceof Error ? error.message : 'An error occurred')
+        setError(error instanceof Error ? error.message : '오류가 발생했습니다.')
       } finally {
         setLoading(false)
       }
@@ -159,7 +159,7 @@ export default function EditPostClient() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Failed to update post')
+        throw new Error(data.error || '포스트 수정에 실패했습니다.')
       }
 
       setSuccess(true)
@@ -167,7 +167,7 @@ export default function EditPostClient() {
         router.push(`/detail/${formData.slug}`)
       }, 1500)
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      const errorMessage = err instanceof Error ? err.message : '오류가 발생했습니다.'
       setError(errorMessage)
     } finally {
       setLoading(false)

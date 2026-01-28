@@ -325,6 +325,9 @@ export const Content = styled.article`
 export const Sidebar = styled.aside`
   position: sticky;
   top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.lg};
 
   @media (max-width: 1024px) {
     position: static;
@@ -339,17 +342,23 @@ export const Sidebar = styled.aside`
   }
 `
 
-export const SidebarSection = styled.div`
-  margin-bottom: ${theme.spacing['2xl']};
+export const SidebarSection = styled.section`
+  background-color: ${theme.colors.gray50};
+  border: 1px solid ${theme.colors.gray200};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.lg};
+  margin-bottom: 0;
 `
 
 export const SidebarTitle = styled.h3`
   font-size: ${theme.typography.fontSize.xs};
   font-weight: ${theme.typography.fontWeight.semibold};
-  color: ${theme.colors.gray500};
+  color: ${theme.colors.gray600};
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: ${theme.spacing.md};
+  letter-spacing: 1.2px;
+  margin: 0 0 ${theme.spacing.md} 0;
+  padding-bottom: ${theme.spacing.sm};
+  border-bottom: 2px solid ${theme.colors.gray200};
 `
 
 export const ShareLinks = styled(Flex)`
@@ -357,23 +366,41 @@ export const ShareLinks = styled(Flex)`
   gap: ${theme.spacing.sm};
 
   @media (max-width: 1024px) {
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: ${theme.spacing.sm};
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 `
 
-export const Details = styled(Flex)`
+export const Details = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.md};
+  gap: 0;
 `
 
-export const DetailItem = styled(Flex)`
-  flex-direction: column;
-  gap: ${theme.spacing.xs};
+export const DetailItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${theme.spacing.md};
+  padding: ${theme.spacing.sm} 0;
+  border-bottom: 1px solid ${theme.colors.gray200};
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
 `
 
 export const DetailLabel = styled.span`
@@ -382,12 +409,15 @@ export const DetailLabel = styled.span`
   color: ${theme.colors.gray500};
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
 `
 
 export const DetailValue = styled.span`
-  font-size: ${theme.typography.fontSize.base};
+  font-size: ${theme.typography.fontSize.sm};
   color: ${theme.colors.gray900};
   font-weight: ${theme.typography.fontWeight.medium};
+  text-align: right;
+  word-break: break-word;
 `
 
 export const Author = styled(Flex)`
@@ -396,27 +426,42 @@ export const Author = styled(Flex)`
 `
 
 export const AuthorInfo = styled(Flex)`
+  display: flex;
+  flex-direction: row;
   align-items: center;
   gap: ${theme.spacing.md};
+  margin-bottom: ${theme.spacing.md};
 `
 
 export const AuthorAvatar = styled.div`
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
   border-radius: ${theme.borderRadius.full};
-  background-color: ${theme.colors.gray300};
-  object-fit: cover;
+  background: linear-gradient(135deg, ${theme.colors.gray400} 0%, ${theme.colors.gray600} 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${theme.typography.fontSize.sm};
+  font-weight: ${theme.typography.fontWeight.bold};
+  color: ${theme.colors.white};
+  letter-spacing: -0.5px;
 `
 
 export const AuthorDetails = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
+  min-width: 0;
 `
 
 export const AuthorName = styled.div`
   font-size: ${theme.typography.fontSize.md};
   font-weight: ${theme.typography.fontWeight.semibold};
   color: ${theme.colors.gray900};
-  margin-bottom: ${theme.spacing.xs};
+  margin-bottom: 2px;
 `
 
 export const AuthorTitle = styled.div`
@@ -431,5 +476,7 @@ export const AuthorBio = styled(BodyText)`
   font-size: ${theme.typography.fontSize.sm};
   line-height: ${theme.typography.lineHeight.relaxed};
   color: ${theme.colors.gray600};
-  margin-top: ${theme.spacing.md};
+  margin: 0;
+  padding-top: ${theme.spacing.sm};
+  border-top: 1px solid ${theme.colors.gray200};
 `

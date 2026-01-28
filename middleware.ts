@@ -13,11 +13,6 @@ export async function middleware(request: NextRequest) {
 
   // 관리자 경로 보호
   if (pathname.startsWith('/admin')) {
-    // 로그인 페이지는 제외
-    if (pathname === '/admin/login') {
-      return response
-    }
-
     // 쿠키에서 세션 확인
     const supabaseUrl = serverEnv.supabaseUrl
     const supabaseAnonKey = serverEnv.supabaseAnonKey
@@ -40,18 +35,31 @@ export async function middleware(request: NextRequest) {
     })
 
     const {
-      data: { session },
-    } = await supabase.auth.getSession()
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       const url = request.nextUrl.clone()
-      url.pathname = '/admin/login'
+      url.pathname = '/login'
       url.searchParams.set('redirect', pathname)
+      return NextResponse.redirect(url)
+    }
+
+    // 관리자 역할 확인
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profileError || !profile || profile.role !== 'admin') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/admin-required'
       return NextResponse.redirect(url)
     }
   }
 
-  // API 라우트 보호
+  // 관리자 API 라우트 보호
   if (
     pathname.startsWith('/api/rest/posts') &&
     (request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE')
@@ -77,11 +85,22 @@ export async function middleware(request: NextRequest) {
     })
 
     const {
-      data: { session },
-    } = await supabase.auth.getSession()
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // 관리자 역할 확인
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    if (profileError || !profile || profile.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 })
     }
   }
 
@@ -89,5 +108,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/rest/posts/:path*'],
+  matcher: ['/admin/:path*', '/api/rest/posts/:path*', '/login'],
 }

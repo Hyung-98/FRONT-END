@@ -1,11 +1,6 @@
-/**
- * 스킵 네비게이션 링크 컴포넌트
- * 키보드 사용자가 메인 콘텐츠로 바로 이동할 수 있도록 함
- */
-
+import { theme } from '@/styles/theme'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { theme } from '@/styles/theme'
 
 const SkipLink = styled(Link)`
   position: absolute;
@@ -29,5 +24,5 @@ const SkipLink = styled(Link)`
 `
 
 export default function SkipLinkComponent() {
-  return <SkipLink href="#main-content">메인 콘텐츠로 건너뛰기</SkipLink>
+  return <SkipLink href="/">메인 콘텐츠로 건너뛰기</SkipLink>
 }

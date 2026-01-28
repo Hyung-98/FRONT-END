@@ -26,6 +26,11 @@ export async function getSupabaseClient() {
   })
 }
 
+/**
+ * 쿠키 등 저장소에서 세션을 읽어옵니다.
+ * 인증 여부 판단에는 Supabase 권장대로 getUser()를 사용하세요.
+ * @see getUser
+ */
 export async function getSession() {
   const supabase = await getSupabaseClient()
   const {
