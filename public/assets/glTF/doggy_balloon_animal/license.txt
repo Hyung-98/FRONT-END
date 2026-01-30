@@ -1,0 +1,11 @@
+Model Information:
+* title:	Doggy Balloon Animal
+* source:	https://sketchfab.com/3d-models/doggy-balloon-animal-db6ef0ee79b744b790de6ab6fd3bfef0
+* author:	cicinha (https://sketchfab.com/cicinha)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Doggy Balloon Animal" (https://sketchfab.com/3d-models/doggy-balloon-animal-db6ef0ee79b744b790de6ab6fd3bfef0) by cicinha (https://sketchfab.com/cicinha) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
