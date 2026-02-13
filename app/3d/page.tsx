@@ -119,21 +119,6 @@ const ThreeJsUsagePage = () => {
       },
     })
 
-    // ScrollTrigger 애니메이션들
-    // section-intro에서는 radius를 변경하지 않음 (이미 15에 고정)
-    const introTl = gsap.timeline({
-      angle: Math.PI * 2,
-      scrollTrigger: {
-        trigger: '.section-intro',
-        start: 'top top',
-        end: '+=2000',
-        scrub: true,
-        pin: true,
-      },
-    })
-    // radius는 이미 15이므로 변경하지 않음
-    introTl.to(orbit, { radius: 3, ease: 'none' })
-
     gsap.to(orbit, {
       angle: Math.PI * 2,
       ease: 'none',
@@ -148,7 +133,7 @@ const ThreeJsUsagePage = () => {
 
     return () => {
       running = false
-      initialAnimation.kill()
+      // initialAnimation.kill()
       ScrollTrigger.getAll().forEach(t => t.kill())
 
       mesh.geometry.dispose()
@@ -162,10 +147,10 @@ const ThreeJsUsagePage = () => {
   return (
     <>
       <canvas ref={canvasRef} id="canvas" className="fixed inset-0 z-0 w-full h-full"></canvas>
-      <main id="main-content" className="w-full h-full relative z-10">
-        <section className="section section-intro w-full bg-amber-600"></section>
-        <section className="section section-city w-full bg-blue-600"></section>
-        <section className="section section-detail w-full bg-green-600"></section>
+      <main id="main-content" className="relative z-10 w-full h-full">
+        {/* <section className="w-full section section-intro bg-amber-600"></section> */}
+        <section className="w-full bg-blue-600 section section-city"></section>
+        <section className="w-full bg-green-600 section section-detail"></section>
       </main>
     </>
   )

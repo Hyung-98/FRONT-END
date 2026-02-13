@@ -1,6 +1,7 @@
 'use client'
 
 import Footer from '@/components/Footer'
+import LoginSuccessAnimation from '@/components/LoginSuccessAnimation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/styles/common'
 import { theme } from '@/styles/theme'
@@ -86,6 +87,8 @@ export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showAnimation, setShowAnimation] = useState(false)
+  const [redirectUrl, setRedirectUrl] = useState<string>('/')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -156,18 +159,13 @@ export default function LoginPage() {
         }
 
         if (data.session) {
-          // 세션이 쿠키에 저장될 시간을 주기 위해 약간의 지연
-          await new Promise(resolve => setTimeout(resolve, 100))
+          // Store redirect destination
+          const redirect = searchParams.get('redirect') || '/'
+          setRedirectUrl(redirect)
 
-          // 리다이렉트 URL 확인
-          const redirect = searchParams.get('redirect')
-          if (redirect) {
-            window.location.href = redirect
-          } else {
-            // 기본적으로 홈으로 리다이렉트
-            // 관리자 경로 접근 시 미들웨어에서 역할 확인 후 리다이렉트
-            window.location.href = '/'
-          }
+          // Trigger animation overlay
+          setShowAnimation(true)
+          // Navigation happens after animation completes
         }
       }
     } catch (err: unknown) {
@@ -280,6 +278,15 @@ export default function LoginPage() {
         </LoginForm>
       </FormContainer>
       <Footer />
+      {showAnimation && (
+        <LoginSuccessAnimation
+          message="로그인 성공!"
+          onComplete={() => {
+            router.push(redirectUrl)
+            router.refresh()
+          }}
+        />
+      )}
     </>
   )
 }

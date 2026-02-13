@@ -3,7 +3,8 @@
 import { BlogPost } from '@/lib/supabase/posts'
 import { Grid, Section } from '@/styles/common'
 import { theme } from '@/styles/theme'
-import { useMemo, useState } from 'react'
+import gsap from 'gsap'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import CategoryFilter from './CategoryFilter'
 import FeaturedCardComponent from './FeaturedCard'
@@ -79,6 +80,32 @@ export default function HomeContent({
   )
   const [clientCurrentPage, setClientCurrentPage] = useState(currentPage)
 
+  // Ref for GSAP animation
+  const mainRef = useRef<HTMLDivElement>(null)
+
+  // GSAP zoom-in animation on mount
+  useEffect(() => {
+    if (!mainRef.current) return
+
+    // Initial state: scaled down and slightly transparent
+    gsap.set(mainRef.current, {
+      scale: 0.8,
+      opacity: 0,
+    })
+
+    // Zoom-in animation: similar to 3D page
+    const animation = gsap.to(mainRef.current, {
+      scale: 1,
+      opacity: 1,
+      duration: 2.5,
+      ease: 'power2.out',
+    })
+
+    return () => {
+      animation.kill() // Cleanup on unmount
+    }
+  }, []) // Empty deps = run only on mount
+
   // 클라이언트 필터링 로직
   const clientFilteredData = useMemo(() => {
     if (!clientFiltering || !allPosts) {
@@ -143,7 +170,7 @@ export default function HomeContent({
   }
 
   return (
-    <Main>
+    <Main ref={mainRef}>
       {displayData.featuredPost && <FeaturedCardComponent post={displayData.featuredPost} />}
 
       <Recent>

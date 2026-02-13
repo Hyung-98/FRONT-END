@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import HomeContent from '@/components/HomeContent'
+import HomePageClient from '@/components/HomePageClient'
 import {
   getAllCategories,
   getAllPosts,
@@ -36,7 +37,7 @@ export default async function Home({ searchParams }: HomeProps) {
     const featuredPost = !category && allPosts.length > 0 ? allPosts[0] : undefined
 
     return (
-      <>
+      <HomePageClient>
         <Header />
         <main id="main-content">
           <HomeContent
@@ -52,7 +53,7 @@ export default async function Home({ searchParams }: HomeProps) {
           />
         </main>
         <Footer />
-      </>
+      </HomePageClient>
     )
   }
 
@@ -68,7 +69,7 @@ export default async function Home({ searchParams }: HomeProps) {
   const recentPosts = !category && page === 1 ? posts.slice(1) : posts
 
   return (
-    <>
+    <HomePageClient>
       <Header />
       <main id="main-content">
         <HomeContent
@@ -81,6 +82,6 @@ export default async function Home({ searchParams }: HomeProps) {
         />
       </main>
       <Footer />
-    </>
+    </HomePageClient>
   )
 }
