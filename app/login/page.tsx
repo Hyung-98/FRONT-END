@@ -1,10 +1,12 @@
 'use client'
 
-import Footer from '@/components/Footer'
+import CenteredLayout from '@/components/CenteredLayout'
 import LoginSuccessAnimation from '@/components/LoginSuccessAnimation'
 import { createClient } from '@/lib/supabase/client'
+import { translateAuthError } from '@/lib/types/errors'
 import { Button } from '@/styles/common'
 import { theme } from '@/styles/theme'
+import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -16,12 +18,12 @@ import {
   Label,
   SuccessMessage,
 } from '../admin/detail-styles'
-import { translateAuthError } from '@/lib/types/errors'
 
 const supabase = createClient()
 
 const LoginForm = styled.form`
-  max-width: 400px;
+  max-width: 700px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -39,7 +41,7 @@ const Title = styled.h1`
 const TabContainer = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing['2xl']};
+  margin-bottom: ${theme.spacing['lg']};
   border-bottom: 2px solid ${theme.colors.gray200};
 `
 
@@ -75,6 +77,24 @@ const PasswordHint = styled.small`
   color: ${theme.colors.gray500};
   font-size: ${theme.typography.fontSize.xs};
   margin-top: ${theme.spacing.xs};
+`
+
+const ForgotPasswordLink = styled(Link)`
+  align-self: flex-end;
+  font-size: ${theme.typography.fontSize.xs};
+  color: ${theme.colors.gray500};
+  text-decoration: none;
+
+  &:hover {
+    color: ${theme.colors.gray900};
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.blue500 || '#3b82f6'};
+    outline-offset: 2px;
+    border-radius: ${theme.borderRadius.sm};
+  }
 `
 
 export default function LoginPage() {
@@ -183,101 +203,119 @@ export default function LoginPage() {
 
   return (
     <>
-      <FormContainer>
-        <Title>{mode === 'login' ? '로그인' : '회원가입'}</Title>
+      <CenteredLayout>
+        <FormContainer>
+          <Title>{mode === 'login' ? '로그인' : '회원가입'}</Title>
 
-        <TabContainer>
-          <Tab
-            $active={mode === 'login'}
-            onClick={() => {
-              setMode('login')
-              setError(null)
-              setSuccess(null)
-            }}
+          <TabContainer role="tablist" aria-label="인증 방식 선택">
+            <Tab
+              role="tab"
+              id="tab-login"
+              aria-selected={mode === 'login'}
+              aria-controls="panel-auth"
+              $active={mode === 'login'}
+              onClick={() => {
+                setMode('login')
+                setError(null)
+                setSuccess(null)
+              }}
+            >
+              로그인
+            </Tab>
+            <Tab
+              role="tab"
+              id="tab-signup"
+              aria-selected={mode === 'signup'}
+              aria-controls="panel-auth"
+              $active={mode === 'signup'}
+              onClick={() => {
+                setMode('signup')
+                setError(null)
+                setSuccess(null)
+              }}
+            >
+              회원가입
+            </Tab>
+          </TabContainer>
+
+          <div
+            role="tabpanel"
+            id="panel-auth"
+            aria-labelledby={mode === 'login' ? 'tab-login' : 'tab-signup'}
           >
-            로그인
-          </Tab>
-          <Tab
-            $active={mode === 'signup'}
-            onClick={() => {
-              setMode('signup')
-              setError(null)
-              setSuccess(null)
-            }}
-          >
-            회원가입
-          </Tab>
-        </TabContainer>
-
-        {mode === 'signup' && (
-          <InfoBox>
-            <strong>참고:</strong> 회원가입 후 이메일 확인이 필요할 수 있습니다. Supabase
-            대시보드에서 이메일 확인 설정을 확인해주세요.
-          </InfoBox>
-        )}
-
-        {success && <SuccessMessage>{success}</SuccessMessage>}
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-
-        <LoginForm onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label htmlFor="email">이메일</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              placeholder="user@example.com"
-              disabled={loading}
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <Label htmlFor="password">비밀번호</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              placeholder="••••••••"
-              disabled={loading}
-              minLength={mode === 'signup' ? 6 : undefined}
-            />
             {mode === 'signup' && (
-              <PasswordHint>비밀번호는 최소 6자 이상이어야 합니다.</PasswordHint>
+              <InfoBox>
+                <strong>참고:</strong> 회원가입 후 이메일 확인이 필요할 수 있습니다. Supabase
+                대시보드에서 이메일 확인 설정을 확인해주세요.
+              </InfoBox>
             )}
-          </FormGroup>
 
-          {mode === 'signup' && (
-            <FormGroup>
-              <Label htmlFor="confirmPassword">비밀번호 확인</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                disabled={loading}
-                minLength={6}
-              />
-            </FormGroup>
-          )}
+            {success && <SuccessMessage>{success}</SuccessMessage>}
+            {error && <ErrorMessage>{error}</ErrorMessage>}
 
-          <Button type="submit" $variant="primary" disabled={loading} style={{ width: '100%' }}>
-            {loading
-              ? mode === 'signup'
-                ? '회원가입 중...'
-                : '로그인 중...'
-              : mode === 'signup'
-                ? '회원가입'
-                : '로그인'}
-          </Button>
-        </LoginForm>
-      </FormContainer>
-      <Footer />
+            <LoginForm onSubmit={handleSubmit}>
+              <FormGroup>
+                <Label htmlFor="email">이메일</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                  placeholder="user@example.com"
+                  disabled={loading}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <Label htmlFor="password">비밀번호</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  placeholder="••••••••"
+                  disabled={loading}
+                  minLength={mode === 'signup' ? 6 : undefined}
+                />
+                {mode === 'signup' && (
+                  <PasswordHint>비밀번호는 최소 6자 이상이어야 합니다.</PasswordHint>
+                )}
+                {mode === 'login' && (
+                  <ForgotPasswordLink href="/forgot-password">비밀번호 찾기</ForgotPasswordLink>
+                )}
+              </FormGroup>
+
+              {mode === 'signup' && (
+                <FormGroup>
+                  <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    required
+                    placeholder="••••••••"
+                    disabled={loading}
+                    minLength={6}
+                  />
+                </FormGroup>
+              )}
+
+              <Button type="submit" $variant="primary" disabled={loading} style={{ width: '100%' }}>
+                {loading
+                  ? mode === 'signup'
+                    ? '회원가입 중...'
+                    : '로그인 중...'
+                  : mode === 'signup'
+                    ? '회원가입'
+                    : '로그인'}
+              </Button>
+            </LoginForm>
+          </div>
+        </FormContainer>
+      </CenteredLayout>
       {showAnimation && (
         <LoginSuccessAnimation
           message="로그인 성공!"

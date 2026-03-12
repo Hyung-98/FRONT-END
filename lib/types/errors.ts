@@ -39,6 +39,14 @@ export function translateAuthError(message: string): string {
     'Unable to validate email address: invalid format': '올바른 이메일 형식이 아닙니다.',
     Forbidden: '접근 권한이 없습니다.',
     Unauthorized: '인증이 필요합니다.',
+    // 비밀번호 재설정
+    'User not found': '등록되지 않은 이메일입니다.',
+    'Invalid or expired OTP': '재설정 링크가 유효하지 않거나 만료됐습니다. 다시 시도해주세요.',
+    'Token has expired or is invalid':
+      '재설정 링크가 만료됐습니다. 비밀번호 찾기를 다시 시도해주세요.',
+    'New password should be different from the old password':
+      '새 비밀번호는 기존 비밀번호와 달라야 합니다.',
+    'Password is too weak': '비밀번호가 너무 단순합니다. 더 복잡한 비밀번호를 사용해주세요.',
   }
 
   // 정확한 매칭 시도

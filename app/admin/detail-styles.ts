@@ -3,7 +3,8 @@ import { theme } from '@/styles/theme'
 import styled from 'styled-components'
 
 export const FormContainer = styled(Container)`
-  max-width: 1600px;
+  max-width: 700px;
+  width: 100%;
   padding: ${theme.spacing['xl']} ${theme.spacing.lg};
 `
 
@@ -65,6 +66,7 @@ export const Label = styled.label`
 `
 
 export const Input = styled.input`
+  width: 100%;
   padding: ${theme.spacing.md};
   border: 1px solid ${theme.colors.gray300};
   border-radius: ${theme.borderRadius.md};

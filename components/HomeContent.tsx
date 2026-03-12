@@ -87,6 +87,12 @@ export default function HomeContent({
   useEffect(() => {
     if (!mainRef.current) return
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      gsap.set(mainRef.current, { scale: 1, opacity: 1 })
+      return
+    }
+
     // Initial state: scaled down and slightly transparent
     gsap.set(mainRef.current, {
       scale: 0.8,

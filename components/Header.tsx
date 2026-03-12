@@ -191,7 +191,15 @@ export default function Header() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      // 비밀번호 재설정 링크 클릭 시 Supabase가 PASSWORD_RECOVERY 세션을 생성함.
+      // 이 세션은 비밀번호 변경용 임시 세션이므로 로그인 상태로 표시하지 않음.
+      if (event === 'PASSWORD_RECOVERY') {
+        setUser(null)
+        setIsAdmin(false)
+        return
+      }
+
       const authUser = session?.user ?? null
       setUser(authUser)
       if (authUser) {
@@ -218,9 +226,10 @@ export default function Header() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    setUser(null)
-    router.push('/')
-    router.refresh()
+    // router.push + router.refresh 조합은 Next.js 라우터 캐시가 남아
+    // 서버 컴포넌트가 이전 세션 쿠키를 읽는 문제가 발생.
+    // 전체 페이지 재로드로 쿠키·캐시를 완전히 초기화.
+    window.location.href = '/'
   }
 
   return (

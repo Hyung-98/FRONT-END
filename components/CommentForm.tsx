@@ -70,11 +70,18 @@ export default function CommentForm({
     )
   }
 
+  const textareaId = `comment-textarea-${postId}${parentId ? `-${parentId}` : ''}`
+
   return (
     <CommentFormWrapper>
       {isReply && <CommentFormTitle>대댓글 작성</CommentFormTitle>}
       <form onSubmit={handleSubmit}>
+        <label htmlFor={textareaId} className="sr-only">
+          {isReply ? '대댓글 내용' : '댓글 내용'}
+        </label>
         <CommentTextarea
+          id={textareaId}
+          aria-describedby={`${textareaId}-count`}
           value={content}
           onChange={e => setContent(e.target.value)}
           placeholder={placeholder || '댓글을 입력하세요...'}
@@ -82,7 +89,12 @@ export default function CommentForm({
           required
         />
         <CommentFormFooter>
-          <CommentCharCount $isOverLimit={content.length > MAX_LENGTH}>
+          <CommentCharCount
+            id={`${textareaId}-count`}
+            aria-live="polite"
+            aria-atomic="true"
+            $isOverLimit={content.length > MAX_LENGTH}
+          >
             {content.length} / {MAX_LENGTH}
           </CommentCharCount>
           <div style={{ display: 'flex', gap: '8px' }}>

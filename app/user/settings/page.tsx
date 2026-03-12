@@ -1,6 +1,6 @@
 'use client'
 
-import Footer from '@/components/Footer'
+import CenteredLayout from '@/components/CenteredLayout'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/styles/common'
 import { theme } from '@/styles/theme'
@@ -53,6 +53,7 @@ export default function UserSettingsPage() {
         data: { user },
       } = await supabase.auth.getUser()
       if (!user) {
+        setLoading(false)
         router.replace('/login?redirect=/user/settings')
         return
       }
@@ -101,17 +102,16 @@ export default function UserSettingsPage() {
 
   if (loading) {
     return (
-      <>
+      <CenteredLayout>
         <FormContainer>
           <div style={{ textAlign: 'center', padding: theme.spacing['2xl'] }}>로딩 중...</div>
         </FormContainer>
-        <Footer />
-      </>
+      </CenteredLayout>
     )
   }
 
   return (
-    <>
+    <CenteredLayout>
       <FormContainer>
         <Title>프로필 설정</Title>
         {success && <SuccessMessage>{success}</SuccessMessage>}
@@ -136,7 +136,6 @@ export default function UserSettingsPage() {
           </Button>
         </Form>
       </FormContainer>
-      <Footer />
-    </>
+    </CenteredLayout>
   )
 }

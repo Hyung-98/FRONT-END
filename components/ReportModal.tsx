@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   ReportModal as StyledReportModal,
   ReportModalContent,
@@ -33,6 +33,17 @@ export default function ReportModal({ commentId, isOpen, onClose, onReport }: Re
   const [reason, setReason] = useState<ReportReason>('spam')
   const [description, setDescription] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const firstFocusRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!isOpen) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    firstFocusRef.current?.focus()
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isOpen, onClose])
 
   if (!isOpen) return null
 
@@ -60,24 +71,45 @@ export default function ReportModal({ commentId, isOpen, onClose, onReport }: Re
   }
 
   return (
-    <StyledReportModal onClick={handleBackdropClick}>
+    <StyledReportModal
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="report-modal-title"
+    >
       <ReportModalContent>
-        <ReportModalTitle>댓글 신고</ReportModalTitle>
-        <ReportModalSelect value={reason} onChange={e => setReason(e.target.value as ReportReason)}>
+        <ReportModalTitle id="report-modal-title">댓글 신고</ReportModalTitle>
+        <label htmlFor="report-reason" className="sr-only">
+          신고 유형
+        </label>
+        <ReportModalSelect
+          id="report-reason"
+          value={reason}
+          onChange={e => setReason(e.target.value as ReportReason)}
+        >
           {REPORT_REASONS.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
           ))}
         </ReportModalSelect>
+        <label htmlFor="report-description" className="sr-only">
+          신고 내용 (선택사항)
+        </label>
         <ReportModalTextarea
+          id="report-description"
           placeholder="신고 사유를 자세히 설명해주세요 (선택사항)"
           value={description}
           onChange={e => setDescription(e.target.value)}
           maxLength={500}
         />
         <ReportModalActions>
-          <ReportModalButton variant="secondary" onClick={onClose} disabled={isSubmitting}>
+          <ReportModalButton
+            ref={firstFocusRef}
+            variant="secondary"
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
             취소
           </ReportModalButton>
           <ReportModalButton variant="primary" onClick={handleSubmit} disabled={isSubmitting}>
